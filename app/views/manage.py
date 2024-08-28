@@ -756,10 +756,10 @@ def insert():
         name = request.form['name']
         specialization_id = request.form['specialization_id']
         ser_nomer = request.form['ser_nomer']
-        personal_number = request.form['personal_number']
+        person_id = request.form['personal_number']
         date = request.form['date']
 
-        stud = data.Student(name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=personal_number, date=date)
+        stud = data.Student(name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=person_id, person_id=person_id, date=date)
         db.session.add(stud)
         db.session.commit()
 
@@ -806,10 +806,10 @@ def update(id):
         name = request.form['name']
         specialization_id = request.form['specialization_id']
         ser_nomer = request.form['ser_nomer']
-        personal_number = request.form['personal_number']
+        person_id = request.form['personal_number']
         date = request.form['date']
-        stud = data.Student(id=id, name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=personal_number, date=date)
-        data.Student.query.filter_by(id=id).update({'id':id, 'name':name, 'specialization_id':specialization_id, 'ser_nomer':ser_nomer, 'personal_number':personal_number, 'date':date})
+        #stud = data.Student(id=id, name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=personal_number, date=date)
+        data.Student.query.filter_by(id=id).update({'id':id, 'name':name, 'specialization_id':specialization_id, 'ser_nomer':ser_nomer, 'personal_number':person_id, 'person_id': person_id, 'date':date})
         db.session.commit()
         flash("Student Updated Successfully")
         return redirect(url_for('manage_app.vvesti'))

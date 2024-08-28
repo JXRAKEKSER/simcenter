@@ -1,6 +1,6 @@
 from host_data import SOAP_HOST
 
-from zipapp import Client
+from zeep import Client
 
 def get_code(person_id):
     client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")

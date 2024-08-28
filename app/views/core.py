@@ -223,7 +223,7 @@ def floor(number):
     c = a + b
     d1 = c.strftime("%d.%m.%Y")
     timez = c.strftime("%H:%M")
-    test4 = data.Stud_access.query.filter(data.Stud_access.time_begin > timez).filter(data.Stud_access.date == d1).filter(data.Stud_access.room.like(number+".%")).order_by(data.Stud_access.time_begin).all()
+    test4 = data.Stud_access.query.filter(data.Stud_access.time_begin > timez).filter(data.Stud_access.date == d1).filter(data.Stud_access.room.like(f"{number}%")).order_by(data.Stud_access.time_begin).all()
     access = data.Stud_access.query.all()
     schedule = data.Access.query.all()
     stud = data.Student.query.all()

@@ -28,6 +28,7 @@ import pyttsx3
 from host_data import DATABASE_HOST, SOAP_HOST, DATABASE_PASSWORD, DATABASE_NAME, DATABASE_USER
 
 from app.services.student.StudentService import StudentService
+from app.services.parsec.parsec_service import get_code as get_parsec_code
 from flask import request
 
 tts = pyttsx3.init()
@@ -661,8 +662,9 @@ def render_ticket_view(sernomer):
         
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
-        parsec_id = 1234
-        qr_code = generate_qr_code(parsec_id)
+        
+        parsec_code = get_parsec_code(id_st)
+        qr_code = generate_qr_code(parsec_code)
 
         redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
 
@@ -704,11 +706,12 @@ def render_print_view(sernomer, id_stud):
         # code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
         # CODE = code1[0].CODE
         # decimal = int(CODE, 16)
-        print(student_with_access)
+        parsec_code = get_parsec_code(id_st)
+
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
-        parsec_id = 1234
-        qr_code = generate_qr_code(parsec_id)
+        
+        qr_code = generate_qr_code(parsec_code)
         return render_template('print-ticket/print-ticket.html', student=student_with_access, qr_code=qr_code, redirect_url=redir)
     else:
         return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='На сегодня для вас нет запланированного экзамена'))

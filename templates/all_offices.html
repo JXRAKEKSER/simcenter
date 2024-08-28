@@ -1,0 +1,135 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title }} {% endblock %}
+{% block head %}
+{{ super() }}
+<style>
+.qrw:hover {
+  filter: brightness(0.8);
+}
+</style>
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{%- from "auto_reload.html" import auto_reloader with context %}
+{%- from "_helpers.html" import render_field with context %}
+{%- from "_footers.html" import panel_footer, spacer with context %}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+    	<div class="panel-heading">
+	    	<div class="row">
+				{{ auto_reloader(True, duration=translate('Duration', 'en', [defLang]), refresh=translate('Auto reload', 'en', [defLang]), durMsg=translate('Enter a duration in seconds to auto-reload the page in :', 'en', [defLang])) }}
+    			<div class="col-xs-12 hidden-md hidden-lg text-center mb-1">
+        			<a href="#" data-toggle="modal" data-target="#branch_qr"
+        				data-toggle="tooltip"
+        				title="QR - {{ translate('All tickets', 'en', [defLang]) }}"
+					>
+						<i class="fa fa-3x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i>
+					</a>
+    			</div>
+				<div class="col-xs-12">
+		    		<h2 class="text text-center"><strong> {{ translate('Все билеты', 'en', [defLang]) }} </strong></h2>
+				</div>
+			</div>
+
+			<div class="row text-center text-muted h4 ar2">
+				<div class="col-sm-10 col-sm-offset-1 col-md-offset-4 col-md-4 well">
+					{{ translate('Вытащил последний билет', 'en', [defLang]) }} :
+					<u> </u>
+				</div>
+			</div>
+			{% endif %}
+	    	<div class="row">
+				<div class="col-xs-12 text-center">
+		    		<div class="btn-group-justified">
+						<a class="btn btn-warning" data-toggle="modal" data-target="#rall">
+			    			<span class="fa fa-reply-all"></span>
+			    			<strong>{{ translate('Сбросить все', 'en', [defLang]) }}</strong>
+						</a>
+						{% if not settings.single_row %}
+						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
+			    			<span class="fa fa-trash"></span>
+			    			<strong>{{ translate('Удалить все', 'en', [defLang]) }}</strong>
+						</a>
+						{% endif %}
+		    		</div>
+				</div>
+	    	</div>
+        </div>
+        <div class="panel-body">
+	    	<div class="row text-center ar2 h3 text-muted hidden-xs">
+				<div class="col-xs-1">
+		    		({{ translate('Билет', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+		    		({{ translate('Изданный', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+		    		({{ translate('Вытащил', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+		    		({{ translate('В ожидании', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-3">
+		    		({{ translate('Значение', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+					({{ translate('Действия', 'en', [defLang]) }})
+				</div>
+	    	</div>
+
+	      	
+			<div class="row well h4 text-center {{ ticket_color(o) }}">
+		  		<div class="col-xs-12 col-sm-1">
+		    		<b> </b>
+		  		</div>
+		  		<div class="col-xs-12 col-sm-2">
+					  {{ moment(o.timestamp).format('L') }}
+		  		</div>
+		  		<div class="col-xs-12 col-sm-2">
+		    		{% else %} <u>{{ translate('Waiting', 'en', [defLang]) }}</u> {% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-2">
+				</div>
+		  		<div class="col-xs-12 col-sm-3">
+		    		{% if o.n %}<u>  </u> {% else %} <u> {{ translate('Нет', 'en', [defLang]) }}/{{ translate('Печатный', 'en', [defLang]) }} </u> {% endif %}
+		  		</div>
+				<div class="col-xs-12 col-sm-2">
+
+				</div>
+			</div>
+
+			
+    	</div>
+		<div class="panel-footer text-center">
+		
+			
+	    	<div class="row text-center">
+				<div class="pagination">
+		    		
+				</div>
+	    	</div>
+		</div>
+	</div>
+</div>
+
+{% from '_modals.html' import confirmModal, qrModal %}
+{{ confirmModal(
+	[['rall', translate('Предупреждение : Сбросить все', 'en', [defLang]),
+	translate("Вы пытаетесь сбросить все офисы и задачи до нуля, со всеми удаленными билетами, которые невозможно восстановить. Вы уверены в этом?", 'en', [defLang]),
+	['dall', translate('Предупреждение : Удаление всех', 'en', [defLang]),
+	translate("Вы пытаетесь удалить каждый офис и задачу в нем со всеми билетами, которые невозможно восстановить , Вы в этом уверены?", 'en', [defLang])
+, yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang]))}}
+{% endblock %}

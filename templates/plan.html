@@ -1,0 +1,75 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+		<div class="panel panel-default">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted ar1">
+		    		<strong>
+						<span class="fa fa-plus"></span>
+						  {{ translate('Add Students', 'en', [defLang]) }}
+		    		</strong>
+				</h3>
+	    	</div>
+	    	<div class="panel-body">
+				</a>
+				<p class="h3 text-center text-muted ar2">
+				    | {{ translate("Здесь вы можете добавить студента", 'en', [defLang]) }} |
+				</p>
+				
+				<label for="phone">Ф.И.О</label><br><br>
+				<p><input type="text" id="name" name="name" placeholder= 'В формате "Скребец Артём Сергеевич"' Style="width:50%"><br></p>
+				<label for="phone">Серия Номер Паспорта</label><br><br>
+				<p><input type="text" id="ser_nomer" name="ser_nomer" placeholder= 'В формате "1234567890"' Style="width:50%" ><br></p>
+				
+				
+				<label for="phone">Специальность</label><br><br>
+				<form action="/" method="POST">
+				{{form.csrf_token}}
+				{{form.opts}}
+				<ul>
+				{% for error in.opts.errors %}
+				<li style="color:red;">{{error}}</li>
+				{% endfor %}
+				</ul>
+				<input type="submit">
+				</form>
+				<!--<select id="business" name="business" Style="width:50%"><br>
+	            <option value="First Choice">First Choice</option>
+	            <option value="Second Choice">Second Choice</option>
+	            <option value="Third Choice">Third Choice</option>
+	            
+                </select>-->
+				<br><br>
+				<!--<p><input type="text" id="specialization_id" name="specialization_id" placeholder= 'В формате "например программист"' Style="width:50%"><br></p>-->
+				
+				
+				<label for="phone">Персональный номер</label><br><br>
+				<p><input type="text" id="ser_nomer" name="ser_nomer" placeholder= 'В формате "1234567890"' Style="width:50%"><br></p>
+				<label for="phone">Расположение фото</label><br><br>
+				<p><input type="text" id="specialization_id" name="specialization_id" placeholder= 'В формате "например путь до файла с фото"' Style="width:50%"><br></p>
+				
+				<p class="pb-5"></p>
+				<center>
+		    		<button class="btn btn-md btn-danger"> {{ translate('Добавить студента', 'en', [defLang]) }}</button>
+				</center>
+    			<p class="pb-2"></p>
+	    	</div>
+		</div>
+    </form>
+</div>
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

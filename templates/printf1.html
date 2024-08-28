@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<style>
+
+.button {
+  background-color: white;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 30px;
+  margin: 4px 2px;
+  cursor: pointer;
+  position: absolute;
+  left: -290px;
+}
+
+.img {
+  position: absolute;
+  left: 10px;
+  top: 80px;
+  height: 400;
+  width: 400;
+}
+</style>
+  <meta charset="UTF-8">
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+<div class="col text-center">
+<button id="click" class="button button" onclick="window.print()">QR-Ключ</button>
+  </div>
+   </div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/js/bootstrap.min.js'></script>
+<script>
+$(document).ready(function(){
+ $('#click').click(function(){});
+  // set time out 5 sec
+     setTimeout(function(){
+        $('#click').trigger('click');
+    }, 2000);
+});
+window.setTimeout(function () {
+window.location = "http://172.29.8.47:5000/touch/en?a=0"},5000)
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function generateBarCode()
+            {
+                var nric = $('#text').val();
+                var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=400x400';
+                $('#barcode').attr('src', url);
+            }
+        </script>
+		
+		<p
+            
+            onblur='generateBarCode();' /> 
+
+      <img id='barcode' 
+            src="https://api.qrserver.com/v1/create-qr-code/?data=91&amp;size=1000x1000" 
+            alt="" 
+             class="img img"
+            />
+
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+@import url(../blocks/body/body.css);
+@import url(../blocks/action-button/action-button.css);
+@import url(../blocks/student-info/student-info.css);
+@import url(../blocks/student-info/__id/student-info__id.css);
+@import url(../blocks/student-info/__fio/student-info__fio.css);
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+
+    min-height: 100%;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 50px;
+}
+.controls__progress-bar {
+    grid-column: 1/3;
+}
+.qr-code__image {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}

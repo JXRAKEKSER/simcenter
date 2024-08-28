@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/psldstyle.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+    body {
+      background-image: url({{ url_for ('static', filename = 'images/lg001.jpg')}});
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+	  overflow:hidden;
+    }
+
+    /* #text {
+      position: absolute;
+      text-align: center;
+      padding: 300px;
+      color: #f1f1f1;
+      top: -100px;
+      right: 80px;
+      font-size: 40px;
+    } */
+
+    #error_text {
+      position: relative;
+      text-align: center;
+      color: #f1f1f1;
+      top: 760px;
+
+      font-size: 40px;
+    }
+
+    #passport {
+      position: absolute;
+      top: 500px;
+      right: 750px;
+    }
+
+    /* #myVideo {
+      position: fixed;
+      right: 50%;
+      transform: translateX(50%);
+      bottom: -20px;
+      width: 650px;
+      height: 650px;
+      <!--min-width: 100%;
+      min-height: 100%;-->
+    } */
+
+    h1 {
+      position: absolute;
+      left: 640px;
+      top: 740px;
+      color: #ffffff;
+    }
+    <!--ldin-->
+    .lds-dual-ring {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      position: absolute;
+
+    }
+    .lds-dual-ring:after {
+      content: " ";
+      display: block;
+      width: 34px;
+      height: 34px;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      border-color: #fff transparent #fff transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+      position: absolute;
+      left: 880px;
+      top: 740px;
+    }
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    </style>
+</head>
+<body>
+  <section class="manual">
+    <div class="manual__caption" id="text"><b>Приложите страницу вашего паспорта с фото на сканер, как изображено на видео, и нажмите кнопку СКАНИРОВАТЬ .</b></div>
+    <video class="manual__video" autoplay muted loop id="myVideo">
+      <source src="/static/multimedia/Scanner.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="error" id="error_text"></div>
+    <form class="controls" onsubmit="return false;">
+      <button style="margin: 20px 0 0 0; font-size: 200%;" id="back-to-home">НА ГЛАВНУЮ</button>
+      <button onclick="scan(this)" style="font-size:200%; position:relative; margin: 20px 0 0 0;" id="scan-button">СКАНИРОВАТЬ<span class="spinner"></span></button>    
+  </form>
+  </section>
+<!-- <video autoplay muted loop id="myVideo">
+  <source src="{{ url_for ('static', filename = 'multimedia/Scanner.mp4')}}" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video> -->
+<!--<div id="passport"><img src="im/passport.png" width="430" height="230"></div>-->
+
+
+
+</div>
+
+<!--<h1><b>Поиск Данных</b> </h1>
+<div class="lds-dual-ring"> </div>-->
+<main>
+
+  
+
+</main>
+<!-- partial -->
+  <script  src="{{ url_for ('static', filename = 'psldscript.js')}}"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+
+<head>
+    <style>
+    /* CSS comes here */
+	body {
+  background-image: url({{ url_for ('static', filename = 'images/whi.jpg')}});
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-size: 100% 100%;
+}
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
+h3 {
+  text-align: center;
+  font-size: 50px;
+}
+h4 {
+  text-align: center;
+  font-size: 50px;
+}
+h2 {
+  color: green;
+  position: absolute;
+  left : 765px;
+  bottom : 100px;
+  font-size: 40px;
+  border: 10px solid rgba(255,255,255,0.3);
+  box-shadow: 0px 0px 10px 5px gray;
+  
+}
+.button {
+  
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 30px;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+}
+.button4 {
+border-radius: 12px;
+background-color: #4CAF50; /* Green */
+position: absolute;
+left: 855px;
+bottom: 400px;
+  }
+  
+.button3 {border-radius: 12px;
+background-color: RED;
+position: absolute;
+left: 880px;
+bottom: 250px;
+}
+.button5 {border-radius: 12px;
+background-color: RED;
+position: absolute;
+left: 770px;
+bottom: 250px;
+}
+    </style>
+    <title>identity check</title>
+</head>
+
+<body>
+  {% if test|length > 0 %}  
+
+<h1> Здравствуйте </h1>
+<h3> {{test[0][2]}} </h3>
+
+
+<script>
+</script>
+<a href="/view-ticket/{{test[0][4]}}" ><button class="button button4">Продолжить</button>
+<a href="{{url_for('core.touch')}}"><button class="button button3">Это не Я</button>
+ 
+<h2> Вы успешно прошли </h2>
+
+ {% else %}
+				<h1> Вы не найдены в базе </h1>
+				<a href="{{url_for('core.touch')}}"> <button class="button button5">Вернуться на главную</button>
+	{% endif %}
+</body>
+
+</html>

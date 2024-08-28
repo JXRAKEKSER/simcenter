@@ -1,0 +1,37 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+<div class="col-md-12">
+  <form method="POST" enctype="multipart/form-data" id="fm">
+	  <div class="panel panel-default">
+      <div class="panel-heading text-center">
+		    <h3 class="text-muted">
+			    <span class="fa fa-database"></span>
+          <strong>
+            {{ translate('Экспорт', 'en', [defLang]) }} CSV
+		      </strong>
+		    </h3>
+	    </div>
+	    <div class="panel-body">
+		    {{ form.csrf_token }}
+        <h3 class="text text-center text-muted ar2 mt-4 mb-7">
+          | {{ translate("CSV - это базовые текстовые файлы, которые используются для экспорта столбцов и строк базы данных в простой текстовый формат, в котором каждое значение разделено запятой.", 'en', [defLang])}}  |
+		</h3>
+			{{ render_field(form.headers, class='form-control mb-2') }}
+			{{ render_field(form.delimiter, class='form-control mb-2') }}
+		    {{ render_field(form.table, class='form-control mb-4') }}
+			{{ render_field(form.date, class='form-control mb-4') }}
+		    <center class='mt-3 mb-5'>
+				<button class="btn btn-md btn-danger">{{ translate('Извлечение таблицы', 'en', [defLang]) }}</button>
+		    </center>
+	    </div>
+	  </div>
+  </form>
+</div>
+{% endblock %}

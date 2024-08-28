@@ -1,0 +1,92 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button2 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008CBA;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+.button1 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008CBA;
+}
+
+.button1:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+
+</style>
+<div class="col-md-12">
+    <form  id="fm">
+		<div class="panel panel-default">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted ar1">
+		    		<strong>
+						<span class="fa fa-plus"></span>
+						  {{ translate('', 'en', [defLang]) }}
+		    		</strong>
+				</h3>
+	    	</div>
+	    	<div class="panel-body">
+				
+				<p class="h3 text-center text-muted ar2">
+				    | {{ translate("Здесь вы можете добавить студента", 'en', [defLang]) }} |
+				</p>
+
+				
+				
+
+				
+				
+			
+				
+    			<p class="pb-2"></p>
+	    	</div>
+		</div>
+    </form>
+				<br><br><br>
+				<a href="{{url_for('manage_app.vvesti')}}"><button class="btn btn-md btn-danger" style="font-size:30px;"> Вывести студентов </button></a><br><br><br><br>
+{% if getattr(current_user, 'role_id', None) == 1   %}
+				<a href="{{url_for('manage_app.dobavit')}}"><button class="btn btn-md btn-danger" style="font-size:30px; "> Добавить список студентов </button></a><br><br><br><br>
+				<a href="{{url_for('manage_app.upload_file')}}"><button class="btn btn-md btn-danger" style="font-size:30px; "> Добавить Фото </button></a><br><br>
+	{% endif%}		
+</div>
+
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

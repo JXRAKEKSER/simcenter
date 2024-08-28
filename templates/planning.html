@@ -1,0 +1,136 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<style>
+input[type=text], select {
+  width: 40%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 7px 7px 5px #888888;
+}
+
+.division1 {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+</style>
+
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+		<div class="panel panel-default">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted ar1">
+		    		<strong>
+						<span class="fa fa-plus"></span>
+						  {{ translate('Queue Planning ', 'en', [defLang]) }}
+		    		</strong>
+				</h3>
+	    	</div>
+	    	<div class="panel-body">
+				</a>
+				<p class="h3 text-center text-muted ar2">
+				    | {{ translate("Планирование очереди", 'en', [defLang]) }} |
+				</p>
+				
+
+
+				
+  <div class="division1"><center>
+  <p><label for="date" Style= "font-size:30px"></label>
+  <input type="text" id="date" name="date" placeholder="ДАТА" Style= "font-size:20px; width:40%; text-align:center"required><br><br></p></center>
+  
+  <form class="form-inline">
+ <p> 
+ <label for="nd" style="font-size:30px; color:#00bfff"><b>Начало дня</b></label><br>
+  <input type="text" id="nd" placeholder="час" name="nd" Style= "font-size:20px" required>
+  <input type="text" id="ndx" placeholder="минута" name="ndx" Style= "font-size:20px" required><br>
+  <label for="pwd" style="font-size:30px; color:#00bfff"><b>Конец дня</b></label><br>
+  <input type="text" id="pwd" placeholder="час" name="pwd" Style= "font-size:20px" required>
+  <input type="text" id="pwdx" placeholder="минута" name="pwdx" Style= "font-size:20px" required><br>
+   <label for="break" style="font-size:30px; color:#00bfff"><b>Перерыв</b></label><br>
+  <input type="text" id="break1" placeholder="Сколько часов" name="break2" Style= "font-size:20px" required>
+  <input type="text" id="break2" placeholder="Сколько минут" name="break3" Style= "font-size:20px" required>
+  <input type="text" id="break3" placeholder="После какого раунда" name="break1" Style= "font-size:20px" required></p><br>
+  </form>
+  
+  <label for="break" style="font-size:30px; color:#00bfff"><b>Экзамен</b></label><br>
+  <p><input type="text" id="name" name="time_ek" placeholder= "Длительность экзамена" Style= "font-size:20px" required><br></p>
+  
+  
+  <p><input type="text" id="name" name="time_pod" placeholder= "Длительность подготовки" Style= "font-size:20px" required><br></p>
+  
+  <label for="sub" Style= "font-size:20px; color: green"><h1><b>Специальность<b></h1></label><br>
+<select name= "special" method="GET" action="/plan" Style= "font-size:20px">
+    {% for spec in specialization %}
+    <option value= "{{spec.name}}" SELECTED style="color:green">{{spec.name}} </option>"
+    {% endfor %}
+</select>
+  <h3 style="font-size:30px; color:#0377fc"><b>Количество потоков :<b></h3> 
+        <input type="text" id="txt2" name="count_p"/ required>
+        <h3 style="font-size:30px; color:#0377fc"><b>Список кабинетов для 1 потока<b></h3>    
+		<input type='text' name='contact[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact[]' class='cnt' style="width: 10%">
+	  	<input type='text' name='contact[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact[]' class='cnt' placeholder= "" style="width: 10%"><br>
+		<h3 style="font-size:30px; color:#0377fc"><b>Список кабинетов для 2 потока<b></h3>
+		<input type='text' name='contact2[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact2[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact2[]' class='cnt' style="width: 10%">
+	  	<input type='text' name='contact2[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact2[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact2[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact[]' class='cnt' style="width: 10%">		
+		<input type='text' name='contact2[]' class='cnt' placeholder= "" style="width: 10%"><br>
+		<h3 style="font-size:30px; color:#0377fc"><b>Список кабинетов для 3 потока<b></h3>  
+		<input type='text' name='contact3[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact3[]' class='cnt' style="width: 10%">
+	  	<input type='text' name='contact3[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact3[]' class='cnt' style="width: 10%"> 
+		<input type='text' name='contact3[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact3[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact[]' class='cnt' style="width: 10%">
+		<input type='text' name='contact3[]' class='cnt' placeholder= "" style="width: 10%"><br>
+		
+
+ <!-- <input type="button" value="Показать" onclick="gentable()" Style= "font-size:20px" /> -->
+
+  <div id="dydiv"></div>
+				
+
+				<br><br>
+
+				<p class="pb-5"></p>
+				<center>
+		    		<button class="btn btn-md btn-danger" type="submit" id="saveBtn" value="Click" style="font-size:30px; "> Сформировать очередь </button>
+							    		
+				</center>
+    			<p class="pb-2"></p>
+				</div>
+	    	</div>
+		</div>
+    </form>
+</div>
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

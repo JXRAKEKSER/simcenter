@@ -1,0 +1,20 @@
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "/home/adminsuo/.pyenv/versions/3.7.10/lib/python3.7/site-packages/cv2/qt/plugins" even though it was found.
+This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+
+Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl, xcb.
+
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+Starting task(CacheTicketsAnnouncements)...
+AKT 0.9 beta is running on http://172.29.4.10:5000
+
+Press Control-c to stop
+KeyboardInterrupt
+2021-06-22T10:11:38Z
+Stopping task: CacheTicketsAnnouncements ...

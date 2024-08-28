@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Просмотр талона</title>
+    <link rel="stylesheet" href="/static/css/pages/page-ticket.css" />
+  </head>
+  <body class="body">
+    <header class="header">
+      <button class="action-button" id="back-button">Назад</button>
+    </header>
+    <main class="main">
+      <section class="student-info">
+        <span class="student-info__id"
+          >Индивидуальный номер: {{ student[0].id_stud }}</span
+        >
+        <span class="student-info__fio">Аккредитуемый: {{ student[0].student }}</span>
+      </section>
+      <section class="schedule">
+        <table id="schedule" class="center" style="color: white;">
+          <tr>
+            <td colspan="3" style="text-align:center;  font-size: 130%; height:20px;" ><b>Кабинет</td>
+            <td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время начала</td>
+            <td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время окончания</td>
+          </tr>
+              {%for el in student |sort(attribute='time_begin') %}
+            <tr>
+              <td colspan="3" style="text-align:center; font-size: 130%; height:20px; "><b>{{el.room}}</td>
+              <td colspan="3" style="text-align:center;font-size: 130%;height:20px;"><b>{{el.time_begin}}</td>
+              <td style="text-align:center;font-size: 130%; height:20px; width:30%; "><b>{{el.time_end}}</td>
+            </tr>
+      {%endfor%}
+      </table>
+      </section>
+      <section class="qr-code">
+        <img
+          class="qr-code__image"
+          src="data:image;base64,{{ qr_code }}"
+          alt="qr code"
+        />
+      </section>
+      <section class="controls">
+        <button class="action-button" id="back-to-home">
+          На главный экран
+        </button>
+        <button
+          class="action-button"
+          id="print-ticket"
+          data-redirect-url="{{redirect_to_print_url}}"
+        >
+          Распечатать талон
+        </button>
+        <progress-bar-element
+          class="controls__progress-bar"
+          id="progress-bar"
+          progress="0"
+        ></progress-bar-element>
+      </section>
+    </main>
+  </body>
+  <script type="module" src="/static/scripts/page-ticket/index.js"></script>
+</html>

@@ -1,0 +1,232 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<style>
+
+#myInput {
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+</style>
+
+
+
+<div class="col-md-12">
+		<div class="panel panel-default">
+	    	<div class="panel-body">
+	
+				
+				
+  <div class="container" style="width:100%">
+    <div class="el">
+        <div class="col md-12">
+            <div class="jumbotron p-3">
+			<button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Students</button><br><br> 
+				
+				{% with messages = get_flashed_messages() %}
+                {% if messages %}
+                 
+    {% for message in messages %}
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                {{message}}
+                </div>
+                {% endfor %}
+     
+                {% endif %}
+                {% endwith %}
+			
+	<form>
+    <div class="row" style="display:inline-block;text-align:center;"><label style="text-align:center;">Фио</label><input id="myInput" name="dentry"></div>
+    <div class="row" style="display:inline-block;text-align:center;"><label style="text-align:center;">Серия Номер</label><input id="myInput" name="tentry"></div>
+    <div class="row" style="display:inline-block;text-align:center;"><label style="text-align:center;">Дата</label><input id="myInput" name="studen"></div><br><br>
+     <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Filter" onclick=filter(this)></div><br>
+     <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Reset" onclick=delfilter(this)></div>
+  </form>
+			<!--<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Введите дату" title="Type in a date">-->
+			<table class="table table-hover table-striped" id="students" >
+                    <tr>
+                       
+                        <th>ФИО</th>
+                        <th>Серия Номер<br> паспорта</th>
+                        <th>Дата</th>
+						<th>Специализация</th>
+						<th>Индивидуальный номер</th>
+                        <th>Action</th>
+                    </tr>
+					{% if stud|length > 0 %}  
+					{%for el in stud  %}
+					
+					<tr data-id="1">
+                        
+                        <td>{{el.name}}</td>
+                        <td>{{el.ser_nomer}}</td>
+                        <td>{{el.date}}</td>
+						<td>{{el.specialization_id}}</td>
+						<td>{{el.person_id}}</td>
+						<td>
+                           <a href="/update/{{el.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{el.id}}">Edit</a>
+                            <a href="/delete/{{el.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+							<a href="/printf/{{el.ser_nomer}}/1" class="btn btn-info btn-xs" onclick="return confirm('Are You Sure To Print ?')">Print</a>
+                        </td>
+						</tr>
+						
+						
+						
+<!-- Modal Edit Student-->
+     <div id="modaledit{{el.id}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+        <div class="modal-content">
+       <div class="modal-header"><h4 class="modal-title">Update Information</h4></div>
+        <div class="modal-body">
+        <form action="{{url_for( 'manage_app.update', id=el.id ) }}" method="POST">
+         
+         <div class="form-group">
+          <label>ФИО:</label>
+          <input type="text" class="form-control" name="name" value="{{el.name}}">
+         </div>
+ <div class="form-group">
+  <label for="specialization_id">Специализация:</label>
+  <select id="specialization_id" name="specialization_id" class="form-control">
+    {% for spec in specialization %}
+      <option value="{{ spec.name }}" {% if spec.name == el.specialization_id %}selected{% endif %}>{{ spec.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+		 <div class="form-group">
+          <label>Серия Номер<br> паспорта:</label>
+          <input  class="form-control" name="ser_nomer" value="{{el.ser_nomer}}">
+         </div>
+		 <div class="form-group">
+          <label>Индивидуальный номер:</label>
+          <input type="number" class="form-control" name="personal_number" value="{{el.personal_number}}">
+          <label>Date:</label>
+       <input type="text" class="form-control" name="date" value="{{el.date}}">
+
+         </div>
+		 
+         <div class="form-group">
+          <button class="btn btn-primary" type="submit">Update</button>
+         </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      </div>
+     </div>
+	 {%endfor%}
+			{% endif %}
+    </table>	 
+						
+						<!-- Modal Add Student-->
+  <div id="mymodal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+     <div class="modal-content">
+    <div class="modal-header"><h4 class="modal-title">Add Student</h4></div>
+    <div class="modal-body">
+     <form action="{{url_for('manage_app.insert')}}" method="POST">
+      
+      <div class="form-group">
+       <label>ФИО:</label>
+       <input type="name" class="form-control" name="name" required="1">
+      </div>
+      <div class="form-group">
+       <label for="specialization_id">Специализация:</label>
+	   <select id="specialization_id" name="specialization_id" class="form-control">
+					{%for el in specialization %}
+	   <option value="{{el.name}}">{{el.name}}</option>
+	   {%endfor%}
+		</select>	
+      </div>
+	  <div class="form-group">
+       <label>Серия Номер<br> паспорта:</label>
+       <input  class="form-control" name="ser_nomer" required="1">
+      </div>
+	  <div class="form-group">
+       <label>Индивидуальный номер:</label>
+       <input type="number" class="form-control" name="personal_number" >
+      </div>
+	  <div class="form-group">
+       <label>Date:</label>
+       <input type="text" class="form-control" name="date" required="1">
+      </div>
+	  
+      <div class="form-group">
+      <button class="btn btn-primary" type="submit">Add Student</button>
+      </div>
+     </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+   </div>
+   </div>
+  </div>
+
+ <script>
+
+function filter(ev){
+    let form = ev.form;       
+    let dentry = form.dentry.value;
+    let tentry = form.tentry.value;
+    let studen = form.studen.value; 
+    
+    if (!dentry && !tentry && !studen ){return alert('Введите данный');}      
+           
+    var rows = document.getElementById("students").rows;
+    
+    for(let i = 1; i < rows.length; i++){
+        let row = rows[i];
+       let checkdentry = !dentry || (dentry && row.cells[0].innerHTML && row.cells[0].innerHTML.toLowerCase().indexOf(dentry.toLowerCase()) != -1);
+       let checktentry = !tentry || (tentry && row.cells[1].innerHTML && row.cells[1].innerHTML.toLowerCase().indexOf(tentry.toLowerCase()) != -1);
+       let checkstuden = !studen || (studen && row.cells[2].innerHTML && row.cells[2].innerHTML.toLowerCase().indexOf(studen.toLowerCase()) != -1);
+      
+       if (checkdentry && checktentry && checkstuden){row.style.display = "";}else{row.style.display = "none";}
+    } 
+}
+function delfilter(ev){
+    let form = ev.form;       
+    form.dentry.value = null;
+    form.tentry.value = null;
+    form.studen.value = null;          
+           
+    var rows = document.getElementById("students").rows;    
+    for(let i = 1; i < rows.length; i++){        
+        rows[i].style.display = "";      
+    } 
+}
+  </script>					
+			
+			</div>
+			</div>
+			</div>
+			</div>
+  
+
+				
+				
+			</div>	
+		</div>
+</div>
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

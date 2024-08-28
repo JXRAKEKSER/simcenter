@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                text-align:center;
+            }
+			table.center {
+				margin-left: auto; 
+				margin-right: auto;
+			}
+			
+            h1 {
+                color:green;
+            }
+            @media print {
+               .image1 {
+                  visibility: hidden;
+               }
+            }
+
+			.image2
+			{
+			position: absolute;
+			top:740px;
+			left:2%;
+			width:98%;
+			height:21%;
+                        filter:contrast(200%);
+			}
+			
+			
+      </style>
+    </head>
+    <body>
+
+{% if test==1 %}
+
+<table class="center" style="width:100%" >
+  <tr>
+    <th colspan="3" style="text-align:center;  font-size: 130%" >На сегодня для вас нет запланированного экзамена</th>
+
+  </tr>
+</table>
+{% else%}
+ <div>
+
+<img src= "{{ url_for ('static', filename = 'images/up1.png')}}" class="image2">
+
+
+<table class="center" style="width:100%" >
+  <tr>
+    <th colspan="3" style="text-align:center;  font-size: 130%" >Индивидуальный номер</th>
+
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align:center; font-size: 130%; height:20px">{{test[0].id_stud}}</td>
+
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align:center; font-size: 130%"><b>Аккредитуемый</b></td>
+
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align:center; font-size: 130%; height:20px">{{test[0].student}}</td>
+
+  </tr>
+  <tr>
+    <td colspan="6" style="text-align:center; font-size: 130%; height:20px"><b>Порядок прохождения кабинетов<br>Номер</td>
+    
+  </tr>
+  <tr>
+    <table id="schedule" class="center">
+        <tr>
+				<td colspan="3" style="text-align:center;  font-size: 130%; height:20px;" ><b>Кабинет</td>
+
+
+                <td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время начала</td>
+
+				<td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время окончания</td>
+
+
+
+
+			  </tr>
+            {%for el in test |sort(attribute='time_begin') %}
+
+			  <tr>
+                  <td colspan="3" style="text-align:center; font-size: 130%; height:20px; "><b>{{el.room}}</td>
+
+				<td colspan="3" style="text-align:center;font-size: 130%;height:20px;"><b>{{el.time_begin}}</td>
+
+				<td style="text-align:center;font-size: 130%; height:20px; width:30%; "><b>{{el.time_end}}</td>
+			  </tr>
+		{%endfor%}
+    </table>
+    <!--<td style="text-align:center; font-size: 50px; style="height=40px">Не известно</td>-->
+
+  </tr>
+  
+</table>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/js/bootstrap.min.js'></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script type="text/javascript">
+            function generateBarCode()            {
+                var url = 'https://api.qrserver.com/v1/create-qr-code/?data={{code}}&amp;size=80%';
+                $('#barcode').attr('src', url);
+            }
+        </script>
+		
+		<p
+            
+            onblur='generateBarCode()' /> 
+		      <img id='barcode' 
+            src="https://api.qrserver.com/v1/create-qr-code/?data={{code}}&amp;size=80%" 
+            alt="" 
+             class="img image5"
+            />
+			                <script type="text/javascript">
+                window.onload = function() { window.print(); }
+				</script>
+				       <img src= "{{ url_for ('static', filename = 'images/lg001.jpg')}}" class="image1" style="position:absolute; top:0%; left:0%">
+                     <style>
+            .noprint {
+                visibility: hidden;
+            }
+            </style>
+{% endif %}			
+
+			</div>
+
+                <script type="text/javascript">
+				window.setTimeout(function () {
+				window.location = "/{{redir}}"},11000)
+                </script>
+    </body>
+</html>

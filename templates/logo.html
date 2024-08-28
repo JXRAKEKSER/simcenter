@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+body {
+  background-image: url({{ url_for ('static', filename = 'images/whi.jpg')}});-->
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-size: 100% 100%;
+}
+img {
+  display: block;
+  
+  
+}
+</style>
+</head>
+
+<body>
+<audio src="/home/adminsuo/AKT-0.9Test/AKT-0.9T/test.mp3" autoplay></audio>
+<div>
+<!--<img src="im/lgovm.png" style="width:60%; height:40%; position:absolute; left:25%; bottom:35%">-->
+</div>
+<img src="{{ url_for ('static', filename = 'images/logo1.png')}} " style="width:60%; height:40%; position:absolute; left:25%; bottom:35%" >
+</body>
+</html>

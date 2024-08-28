@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script defer src="../static/face-api.min.js"></script>
+  <script>    var  myVar = {{setting}}; </script>
+  <script>    var  files = ["{{files[0]}}","{{files[1]}}"];  </script>
+
+  <script defer src="../static/faceid.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+	  background-image: url({{ url_for ('static', filename = 'images/whip.jpg')}});
+    }
+
+    canvas {
+      position: absolute;
+    }
+	h1 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #4CAF50;
+}
+  </style>
+</head>
+<script>
+window.setTimeout(function () 
+{window.location = "/touch/ru"},20000)
+</script>
+<body>
+
+  <video id="video" width="650" height="650" autoplay muted></video>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Печать талона</title>
+    <link rel="stylesheet" href="/static/css/pages/page-print-ticket.css" />
+  </head>
+  <body class="body" data-redirect-url="{{redirect_url}}">
+    <main class="main">
+      <section class="student-info">
+        
+        <span class="student-info__id student-info__id_color_black"
+          >Индивидуальный номер: {{ student[0].id_stud }}</span
+        >
+        <span class="student-info__fio student-info__fio_color_black"
+          >Аккредитуемый: {{ student[0].student }}</span
+        >
+      </section>
+      <table id="schedule" class="center">
+        <tr>
+          <td colspan="3" style="text-align:center;  font-size: 130%; height:20px;" ><b>Кабинет</td>
+          <td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время начала</td>
+          <td colspan="3" style="text-align:center; height:20px; font-size: 130%;"><b>Время окончания</td>
+        </tr>
+            {%for el in student |sort(attribute='time_begin') %}
+          <tr>
+            <td colspan="3" style="text-align:center; font-size: 130%; height:20px; "><b>{{el.room}}</td>
+            <td colspan="3" style="text-align:center;font-size: 130%;height:20px;"><b>{{el.time_begin}}</td>
+            <td style="text-align:center;font-size: 130%; height:20px; width:30%; "><b>{{el.time_end}}</td>
+          </tr>
+		{%endfor%}
+    </table>
+      <section class="qr-code">
+        <img
+          class="qr-code__image"
+          src="data:image;base64,{{ qr_code }}"
+          alt="qr code"
+        />
+      </section>
+    </main>
+  </body>
+  <script
+    type="module"
+    src="/static/scripts/page-print-ticket/index.js"
+  ></script>
+</html>

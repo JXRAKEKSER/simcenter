@@ -1,0 +1,79 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button2 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008CBA;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+
+
+
+</style>
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+		<div class="panel panel-default">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted ar1">
+		    		<strong>
+						<span class="fa fa-plus"></span>
+						  {{ translate('Загрузка списка студентов', 'en', [defLang]) }}
+		    		</strong>
+				</h3>
+	    	</div>
+	    	<div class="panel-body">
+				</a>
+				
+				<h1>Upload your CSV file</h1>
+                <form method="POST" action="" enctype="multipart/form-data">
+                <p><input type="file" name="file"></p>
+					<p><input type="text" pattern="\d{2}.\d{2}.\d{4}" class="datepicker" name="date" placeholder="дд.мм.гггг"></p>
+				<center>
+		    		<button class="btn btn-md btn-danger"> {{ translate('Добавить список', 'en', [defLang]) }}</button>
+				</center>
+                </form>
+				
+				
+				
+
+				
+    			<p class="pb-2"></p>
+	    	</div>
+		</div>
+    </form>
+</div>
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

@@ -1,0 +1,111 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+<style>
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+</style>
+
+
+<div class="col-md-12">
+		<div class="panel panel-default">
+	    	<div class="panel-body">
+				<h3>History</h3>
+
+<form>
+    <div class="row" style="display: inline-block;margin: auto;"><label>Date entry</label><input id="myInput" name="dentry" required></div>
+    <div class="row" style="display: inline-block;margin: auto;"><label>Time entry</label><input id="myInput" name="tentry" required></div>
+    <div class="row" style="display: inline-block;margin: auto;"><label>Student</label><input id="myInput" name="studen"></div><br><br>
+     <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Filter" onclick=filter(this)></div><br>
+     <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Reset" onclick=delfilter(this)></div>
+  </form>
+				<table class="table table-hover table-striped" id="students" >
+                    <tr>
+                       
+                        <th>Date entry</th>
+                        <th>Time entry</th>
+                        <th>Student</th>
+						<th>ID</th>
+						<th>Room</th>
+						<th>Event</th>
+                    </tr>
+					{% if hist|length > 0 %}  
+					{%for el in hist  %}
+					
+					<tr data-id="1">
+                        
+                        <td>{{el.date_his}}</td>
+                        <td>{{el.time_his}}</td>
+                        <td>{{el.name_student}}</td>
+						<td>{{el.id}}</td>
+						<td>{{el.num_room}}</td>
+						<td>{{el.event}}</td>
+						</tr>
+
+	 {%endfor%}
+			{% endif %}
+    </table>
+<script>
+
+function filter(ev){
+    let form = ev.form;       
+    let dentry = form.dentry.value;
+    let tentry = form.tentry.value;
+    let studen = form.studen.value; 
+    
+    if (!dentry && !tentry && !studen ){return alert('Введите данный');}      
+           
+    var rows = document.getElementById("students").rows;
+    
+    for(let i = 1; i < rows.length; i++){
+        let row = rows[i];
+       let checkdentry = !dentry || (dentry && row.cells[0].innerHTML && row.cells[0].innerHTML.toLowerCase().indexOf(dentry.toLowerCase()) != -1);
+       let checktentry = !tentry || (tentry && row.cells[1].innerHTML && row.cells[1].innerHTML.toLowerCase().indexOf(tentry.toLowerCase()) != -1);
+       let checkstuden = !studen || (studen && row.cells[2].innerHTML && row.cells[2].innerHTML.toLowerCase().indexOf(studen.toLowerCase()) != -1);
+      
+       if (checkdentry && checktentry && checkstuden){row.style.display = "";}else{row.style.display = "none";}
+    } 
+}
+function delfilter(ev){
+    let form = ev.form;       
+    form.dentry.value = null;
+    form.tentry.value = null;
+    form.studen.value = null;          
+           
+    var rows = document.getElementById("students").rows;    
+    for(let i = 1; i < rows.length; i++){        
+        rows[i].style.display = "";      
+    } 
+}
+  </script>	
+				
+										
+			</div>					
+			</div>	
+		</div>
+		
+	
+
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

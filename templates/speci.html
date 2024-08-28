@@ -1,0 +1,329 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} AKT - {{ page_title  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import qrModal %}
+
+<style>
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+.center{
+margin-left:auto;
+margin-right:auto;
+}
+</style>
+
+
+<div class="col-md-12">
+		<div class="panel panel-default">
+	    	<div class="panel-body">
+				
+				
+				
+  <div class="container" style="width:100%">
+    <div class="el">
+        <div class="col md-12">
+            
+			<button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add New Specialization</button> </h2><br><br>
+				
+				{% with messages = get_flashed_messages() %}
+                {% if messages %}
+                 
+    {% for message in messages %}
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                {{message}}
+                </div>
+                {% endfor %}
+     
+                {% endif %}
+                {% endwith %}
+			
+			<table class="table table-hover table-striped">
+                    <tr>
+                        <th style="font-size: 30px;width:5%;">ID</th>
+                        <th style="font-size: 30px;">&nbsp;&nbsp;Name</th>
+                        <th width="80">Action</th>
+                    </tr>
+					{% if spez|length > 0 %}  
+					{%for el in spez|sort(attribute='id')  %}
+					
+					<tr data-id="1">
+                        <td style="color:#0320fc;font-size: 30px;width:3%;"><b>{{el.id}}.</td>
+                        <td><button type="button" class="btn btn-link" data-toggle="modal" data-target="#{{el.id}}" style="color:#04a5d1;font-size: 30px"><b>{{el.name}}<b></button></td>
+						<td>
+                           <a href="/updet/{{el.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{el.id}}" data-inline="true">Edit</a>
+                            <a href="/delet/{{el.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')" data-inline="true">Delete</a> 
+                        </td>
+						</tr>
+						
+
+  
+
+	
+						
+<!-- Modal Edit Employee-->
+     <div id="modaledit{{el.id}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+        <div class="modal-content">
+       <div class="modal-header"><h4 class="modal-title">Update Information</h4></div>
+        <div class="modal-body">
+        <form action="{{url_for( 'manage_app.updet', id=el.id ) }}" method="POST">
+         
+         <div class="form-group">
+          <label>Name:</label>
+          <input type="text" class="form-control" name="name" value="{{el.name}}">
+         </div>
+         <div class="form-group">
+          <button class="btn btn-primary" type="submit">Update</button>
+         </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      </div>
+     </div>
+	 {%endfor%}
+			{% endif %}
+    </table>
+
+<!-- Modal -->
+			{% if spez|length > 0 %}  
+			{% for pp in spez|sort(attribute='id') %}
+			
+  <div class="modal fade" id="{{pp.id}}" role="dialog">
+   <div class="modal-dialog" style="width:75%;">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+        
+
+		<h2><button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#myodal{{pp.id}}">Add New </button> </h2>
+		
+				
+	
+		  <table id="myTable" class="table table-hover table-striped" style="width:90%; margin-left:auto; margin-right:auto;">
+					<tr data-id="1">
+                     <!--   <th>Spec ID</th> -->
+						<th>Id</th>
+                        <th>Room</th>
+						<th>Name</th>
+						<th>Briefing</th>
+						<th style="width:10%;">Action</th>
+                    </tr>
+					{% if speza|length > 0 %}  
+					{%for el in speza|sort(attribute='id') %}
+					
+					{% if el.spec_id == pp.id|string() %} 
+					
+					<tr>
+
+                      <!--  <td>{{el.spec_id}}</td> -->
+						<td>{{el.id}}</td> 
+						<td>{{el.room}}</td>
+						<td>{{el.name}}</td>
+						<td>{{el.briefing}}</td>
+						<td>
+						<a href="/upde/{{el.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledi{{el.id}}" data-inline="true" >Edit</a>&nbsp;<a href="/dlt/{{el.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')" data-inline="true" >Delete</a>
+						</td>
+						</tr>
+						
+						
+						<!-- Modal Edit -->
+     <div id="modaledi{{el.id}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+        <div class="modal-content">
+       <div class="modal-header"><h4 class="modal-title">Update Information</h4></div>
+        <div class="modal-body">
+        <form action="{{url_for( 'manage_app.upde', id=el.id ) }}" method="POST">
+         
+         <div class="form-group">
+          <label style="display:none;">Spec ID:</label>
+          <input style="display:none;" type="text" class="form-control" name="spec_id" value="{{el.spec_id}}">
+         </div>
+		 <div class="form-group">
+          <label>Room:</label>
+          <input type="text" class="form-control" name="room" value="{{el.room}}">
+         </div>
+		 <div class="form-group">
+          <label>Name:</label>
+          <input type="text" class="form-control" name="name" value="{{el.name}}">
+         </div>
+		 <div class="form-group">
+          <label>Briefing:</label>
+          <input type="text" class="form-control" name="briefing" value="{{el.briefing}}">
+         </div>
+		 
+         <div class="form-group">
+          <button class="btn btn-primary" type="submit">Update</button>
+         </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      </div>
+     </div>
+	 {% endif %}
+						{%endfor%}
+			{% endif %}
+		  </table>
+
+		  <script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+		  
+<!--		  </div>
+		</div>-->
+
+		  
+		  
+		  
+		
+		  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+		</div>
+      </div>
+      
+    </div>
+  </div>
+			  {%endfor%}
+			{% endif %}
+						
+						<!-- Modal Add Employee-->
+						
+  <div id="mymodal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+     <div class="modal-content">
+    <div class="modal-header"><h4 class="modal-title">Add Specialization</h4></div>
+    <div class="modal-body">
+     <form action="{{url_for('manage_app.inzert')}}" method="POST">
+      <!--<div class="form-group">
+       <label>Id:</label>
+       <input type="text" class="form-control" name="id" required="1">
+      </div>-->
+      <div class="form-group">
+       <label>Name:</label>
+       <input type="name" class="form-control" name="name" required="1">
+      </div>
+     
+      <div class="form-group">
+      <button class="btn btn-primary" type="submit">Add Specialization</button>
+      </div>
+     </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+   </div>
+   </div>
+  </div>
+  
+  
+  			{% if spez|length > 0 %}  
+			{% for pp in spez|sort(attribute='id') %}
+  <!-- Modal ins-->
+  <div id="myodal{{pp.id}}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+     <div class="modal-content">
+    <div class="modal-header"><h4 class="modal-title">Add New</h4></div>
+    <div class="modal-body">
+     <form action="{{url_for('manage_app.ins')}}" method="POST">
+      <!--<div class="form-group">
+       <label>Id:</label>
+       <input type="text" class="form-control" name="id" required="1">
+      </div>-->
+      <div class="form-group">
+       <label style="display:none;">Spec ID:</label>
+       <input style="display:none;" type="name" class="form-control" name="spec_id" value="{{pp.id}}">
+      </div>
+	  <div class="form-group">
+       <label>Room:</label>
+       <input type="name" class="form-control" name="room" required="1">
+      </div>
+	  <div class="form-group">
+       <label>Name:</label>
+       <input type="name" class="form-control" name="name" required="1">
+      </div>
+	  <div class="form-group">
+       <label>Briefing:</label>
+       <input type="name" class="form-control" name="briefing" required="1">
+      </div>
+     
+      <div class="form-group">
+      <button class="btn btn-primary" type="submit">Add New</button>
+      </div>
+     </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+   </div>
+   </div>
+  </div>
+   	  {%endfor%}
+			{% endif %}
+   
+   
+					
+			
+			</div>
+			</div>
+			</div>
+			</div>
+  
+
+				
+				
+			</div>	
+		</div>
+</div>
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{% endblock %}

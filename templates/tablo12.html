@@ -1,0 +1,219 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<!-- обновление  <meta http-equiv="refresh" content="5.5">  -->
+<style>
+
+body {
+  background-image: url('im/whi.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-size: 100% 100%;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button2 {background-color: #008CBA;} /* Blue */
+{
+  font-family: Arial;
+}
+
+* {
+  box-sizing: border-box;
+  
+}
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  left: 0px;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 14px;
+
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+  
+}
+.btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 21px;
+  cursor: pointer;
+  font-size: 21px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
+
+</style>
+<title>(Type a title for your page here)</title>
+
+<script>function display_ct7() {
+var x = new Date()
+var hours = x.getHours().toString()
+hours=hours.length==1 ? 0+hours : hours;
+
+var minutes=x.getMinutes().toString()
+minutes=minutes.length==1 ? 0+minutes : minutes;
+
+var seconds=x.getSeconds().toString()
+seconds=seconds.length==1 ? 0+seconds : seconds;
+
+var month=(x.getMonth() +1).toString();
+month=month.length==1 ? 0+month : month;
+
+var dt=x.getDate().toString();
+dt=dt.length==1 ? 0+dt : dt;
+
+var x1= dt + "/" + month + "/" +  x.getFullYear(); 
+x1 = x1 + " - " +  hours + ":" +  minutes + ":" +  seconds ;
+document.getElementById('ct7').innerHTML = x1;
+document.getElementById('ct7').style.fontSize='30px';
+document.getElementById('ct7').style.color='#006400';
+
+display_c7();
+ }
+ function display_c7(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct7()',refresh)
+}
+display_c7()
+</script> 
+</script> 
+<span id='ct7' style="background-color: none"></span>
+</head>
+
+<body onload=display_ct();>
+<span id='ct' ></span>
+
+<!--<h2>Search Button</h2>-->
+
+<!--<p><button class="button button2">SEARCH STUDENT</button></p>-->
+<form class="example" action="/action_page.php">
+  <!--<input type="text" placeholder="Search.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>-->
+
+<!--<p>Centered inside a form with max-width:</p>
+<form class="example" action="/action_page.php" style="margin:auto;max-width:200px">
+  <input type="text" placeholder="Search.." name="search2">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>-->
+
+<p>
+<table id="customers">
+  <tr>
+    <th style= "font-size: 28px; width:300px">Индивидуальный <br>номер</th>
+    <th style= "font-size: 28px; width:600px">Аккредитуемый</th>
+    <th style= "font-size: 28px">Номер <br>Кабинета</th>
+	<th style= "font-size: 28px">Этаж</th>
+	<th style= "font-size: 28px">Время</th>
+	<!--<th>Exams</th>
+	<th>ADD</th>-->
+  </tr>
+  <script>function(){ 	$("#gogo").empty()}; </script>
+<div id="gogo">
+	{% if test4|length > 0 %}  
+		{%for el in test4 [:10]|sort(attribute='id')  %}
+		
+		
+		<div class="container mt-5">
+			<tr>
+
+				<td style= "font-size: 21px">{{el.id_stud}}</td>
+				<td style= "font-size: 21px">{{el.student}}</td>
+				<td style= "font-size: 21px">{{el.room}}</td>
+				<td style= "font-size: 21px">{{el.kabinet}}</td>
+				<td style= "font-size: 21px">{{el.time_begin}}</td>
+			<!--<td></td>
+			<td><input type="checkbox"></td>-->
+			</tr>
+
+		 </div>
+		
+		{%endfor%}
+
+
+	{% endif %}
+	</div>
+	
+</table>
+</p>
+<script>
+setTimeout(function(){ // load the data from your endpoint into the div
+
+    $("#gogo").load("/hall1")();
+
+},5000)();
+</script>
+<!--<p><button class="button button2">СТУДЕНТЫ КОТОРЫЕ НАЙДЕНЫ В БАЗЕ</button></p>-->
+<button class="btn" style="width:100%"><i class="fa fa-desktop"></i> ВолгГМУ</button>
+
+</body>
+</html>

@@ -1,11 +1,18 @@
 const backToHome = document.querySelector("#back-to-home");
-const scanButton = document.querySelector("#scan-button");
+const sendButton = document.querySelector("#send-button");
+const [ form ] = document.forms;
+const inputSeries = form.querySelector('#series-number');
 
 let text123 = document.querySelector("text1234");
 
 let attempts = 0;
 
 backToHome.addEventListener("click", redirectToHome);
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  location.href = `/view-ticket/${inputSeries.value}`;
+})
 
 function resetLoadingState() {
   scanButton.disabled = false;
@@ -15,6 +22,8 @@ function resetLoadingState() {
 function redirectToHome() {
   location.href = "/touch";
 }
+
+
 
 function scan(obj) {
   // form submission starts

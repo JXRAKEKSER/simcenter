@@ -11,6 +11,8 @@ services:
       - MYSQL_DATABASE=simdb
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-volume:/var/lib/mysql
 
   flask-app:
     container_name: flask-app
@@ -24,3 +26,6 @@ services:
     environment:
       FLASK_ENV: development
       DATABASE_URL: mysql+pymysql://user:user_password@mysql/test_db
+
+volumes:
+  mysql-volume:

@@ -653,7 +653,7 @@ def delete():
 @core.route('/regist/ru')
 def regist():
     print('regist')
-    return render_template('regist.html')
+    return render_template('registration-by-scanner.html')
 
 @core.route('/view-ticket/<sernomer>')
 def render_ticket_view(sernomer):

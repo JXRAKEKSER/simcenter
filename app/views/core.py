@@ -671,8 +671,8 @@ def render_ticket_view(sernomer):
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        #parsec_code = get_parsec_code(id_st)
-        parsec_code = 1234
+        parsec_code = get_parsec_code(id_st)
+        
         qr_code = generate_qr_code(parsec_code)
 
         redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
@@ -716,8 +716,7 @@ def render_print_view(sernomer, id_stud):
         # CODE = code1[0].CODE
         # decimal = int(CODE, 16)
 
-        #parsec_code = get_parsec_code(id_st)
-        parsec_code = 1234
+        parsec_code = get_parsec_code(id_st)
 
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))

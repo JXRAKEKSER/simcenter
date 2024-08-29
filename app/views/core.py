@@ -503,11 +503,19 @@ def planning():
 
     return render_template('planning.html')
 
-@core.route('/pult')
+@core.route('/pult/<room_id>')
+def render_current_students(room_id):
+    currentTime = (datetime.datetime.now() + timedelta(hours=3, minutes=0)).strftime('%H:%M')
+    
+    student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= currentTime).filter(data.Stud_access.time_end >= currentTime).all()
+
+    if bool(student_in_room_list) == 0:
+        return render_template('tablo2.html', student_in_room=None)
+    return render_template('tablo2.html', student_in_room=student_in_room_list[0])
 
 
-
-def pult():
+""" def pult():
+    return render_template('tablo2.html')
     access = data.Stud_access.query.all()
 
     data.Stud_access.query.delete()
@@ -631,7 +639,7 @@ def pult():
         fx = mx
         i += 1
 
-    return render_template('tablo2.html')
+    return render_template('tablo2.html') """
 def create():
 
     os.mknod(r'C:\Users\1\Pictures\rezerv\2.txt')
@@ -663,7 +671,8 @@ def render_ticket_view(sernomer):
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        parsec_code = get_parsec_code(id_st)
+        #parsec_code = get_parsec_code(id_st)
+        parsec_code = 1234
         qr_code = generate_qr_code(parsec_code)
 
         redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
@@ -706,7 +715,9 @@ def render_print_view(sernomer, id_stud):
         # code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
         # CODE = code1[0].CODE
         # decimal = int(CODE, 16)
-        parsec_code = get_parsec_code(id_st)
+
+        #parsec_code = get_parsec_code(id_st)
+        parsec_code = 1234
 
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))

@@ -835,8 +835,12 @@ def plan():
             createperson(stud1)
         except Exception:
             pass
-        stud_acc = data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).delete()
-        stud_a = data.Stud_access.query.filter_by(date=date).order_by(data.Stud_access.id_stud.desc()).all()
+        all_rooms = request.form.getlist("contact[]") + request.form.getlist("contact2[]") + request.form.getlist("contact3[]")
+        for room in all_rooms:
+            data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).filter(data.Stud_access.room == room).delete()
+        
+        #stud_acc = data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).delete()
+        #stud_a = data.Stud_access.query.filter_by(date=date).order_by(data.Stud_access.id_stud.desc()).all()
         #if bool(stud_acc) != 0:
          #   db.session.delete(stud_acc)
         db.session.commit()

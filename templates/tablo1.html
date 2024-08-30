@@ -1,266 +1,227 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(to right, #00cc99, #0066ff);
-  background-size: 200% 100%;
-  animation: backgroundAnimation 10s linear infinite;
-}
-#queue-table-container {
-  min-width: 100%;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(to right, #00cc99, #0066ff);
+        background-size: 200% 100%;
+        animation: backgroundAnimation 10s linear infinite;
+      }
+      #queue-table-container {
+        min-width: 100%;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-#gogo {
-  width: 98%; /* Set the width to 98% */
-  max-width: 1800px; /* Add max-width if needed */
-}
+      #gogo {
+        width: 98%; /* Set the width to 98% */
+        max-width: 1800px; /* Add max-width if needed */
+      }
 
-table {
-  border-collapse: collapse;
-  min-width: 100%;
-  background-color: transparent; /* Set the table background to transparent */
-}
+      table {
+        border-collapse: collapse;
+        min-width: 100%;
+        background-color: transparent; /* Set the table background to transparent */
+      }
 
+      table th,
+      table td {
+        padding: 10px;
+        font-weight: bold; /* Increase the font weight for bold text */
+        font-smooth: always; /* Enable text smoothing for smoother rendering (if supported by the browser) */
+        -webkit-font-smoothing: antialiased; /* Enable font smoothing for WebKit-based browsers */
+        -moz-osx-font-smoothing: grayscale; /* Enable font smoothing for macOS */
+        font-family: "Open Sans", Arial, sans-serif; /* Specify a font that supports Russian characters */
+      }
 
-table th, table td {
-  padding: 10px;
-  font-weight: bold; /* Increase the font weight for bold text */
-  font-smooth: always; /* Enable text smoothing for smoother rendering (if supported by the browser) */
-  -webkit-font-smoothing: antialiased; /* Enable font smoothing for WebKit-based browsers */
-  -moz-osx-font-smoothing: grayscale; /* Enable font smoothing for macOS */
-  font-family: 'Open Sans', Arial, sans-serif; /* Specify a font that supports Russian characters */
-}
+      table th {
+        background-color: #217782; /* Change the background color #0c4061 */
+        color: #ffffff; /* Change the text color to white */
+      }
 
-table th {
-  background-color:  #217782; /* Change the background color #0c4061 */
-  color: #ffffff; /* Change the text color to white */
-}
+      table tr {
+        border-radius: 10px;
+        margin-bottom: 5px;
+      }
 
+      .clock {
+        font-size: 36px; /* Increase the font size for a bolder look */
+        font-weight: bold; /* Use a bold font-weight */
+        color: #ffffff; /* Set the clock text color to white */
+      }
 
-table tr {
-  border-radius: 10px;
-  margin-bottom: 5px;
-} 
+      @keyframes backgroundAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
 
-.clock {
-  font-size: 36px; /* Increase the font size for a bolder look */
-  font-weight: bold; /* Use a bold font-weight */
-  color: #ffffff; /* Set the clock text color to white */
-}
+      .circles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .circles li {
+        position: absolute;
+        display: block;
+        list-style: none;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        animation: animate 25s linear infinite;
+        bottom: -150px;
+      }
+      .circles li:nth-child(1) {
+        left: 25%;
+        width: 80px;
+        height: 80px;
+        animation-delay: 0s;
+      }
+      .circles li:nth-child(2) {
+        left: 10%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 2s;
+        animation-duration: 12s;
+      }
+      .circles li:nth-child(3) {
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+      }
+      .circles li:nth-child(4) {
+        left: 40%;
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+        animation-duration: 18s;
+      }
+      .circles li:nth-child(5) {
+        left: 65%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 0s;
+      }
+      .circles li:nth-child(6) {
+        left: 75%;
+        width: 110px;
+        height: 110px;
+        animation-delay: 3s;
+      }
+      .circles li:nth-child(7) {
+        left: 35%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 7s;
+      }
+      .circles li:nth-child(8) {
+        left: 50%;
+        width: 25px;
+        height: 25px;
+        animation-delay: 15s;
+        animation-duration: 45s;
+      }
+      .circles li:nth-child(9) {
+        left: 20%;
+        width: 15px;
+        height: 15px;
+        animation-delay: 2s;
+        animation-duration: 35s;
+      }
+      .circles li:nth-child(10) {
+        left: 85%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 0s;
+        animation-duration: 11s;
+      }
+      @keyframes animate {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+          border-radius: 0;
+        }
 
-
-@keyframes backgroundAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.circles{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-.circles li{
-    position: absolute;
-    display: block;
-    list-style: none;
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    animation: animate 25s linear infinite;
-    bottom: -150px;  
-}
-.circles li:nth-child(1){
-    left: 25%;
-    width: 80px;
-    height: 80px;
-    animation-delay: 0s;
-}
-.circles li:nth-child(2){
-    left: 10%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 2s;
-    animation-duration: 12s;
-}
-.circles li:nth-child(3){
-    left: 70%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 4s;
-}
-.circles li:nth-child(4){
-    left: 40%;
-    width: 60px;
-    height: 60px;
-    animation-delay: 0s;
-    animation-duration: 18s;
-}
-.circles li:nth-child(5){
-    left: 65%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 0s;
-}
-.circles li:nth-child(6){
-    left: 75%;
-    width: 110px;
-    height: 110px;
-    animation-delay: 3s;
-}
-.circles li:nth-child(7){
-    left: 35%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 7s;
-}
-.circles li:nth-child(8){
-    left: 50%;
-    width: 25px;
-    height: 25px;
-    animation-delay: 15s;
-    animation-duration: 45s;
-}
-.circles li:nth-child(9){
-    left: 20%;
-    width: 15px;
-    height: 15px;
-    animation-delay: 2s;
-    animation-duration: 35s;
-}
-.circles li:nth-child(10){
-    left: 85%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 0s;
-    animation-duration: 11s;
-}
-@keyframes animate {
-
-    0%{
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-        border-radius: 0;
-    }
-
-    100%{
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
-        border-radius: 50%;
-    }
-
-}
-</style>
-</head>
-<body>
-<div class="clock" id="ct7"></div>
-            <ul class="circles">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
-<div id="gogo">
-<div id="queue-table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>Номер</th>
-        <th>Аккредитуемый</th>
-        <th>Кабинет</th>
-        <th>Этаж</th>
-        <th>Время</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if test4|length > 0 %}
-        {% for el in test4[:15] %}
-          <tr>
-            <td>{{ el.id_stud }}</td>
-            <td>{{ el.student }}</td>
-            <td>{{ el.room }}</td>
-            <td>{{ el.room[0] }}</td>
-            <td>{{ el.time_begin }}</td>
-          </tr>
-        {% endfor %}
-      {% endif %}
-    </tbody>
-  </table>
-  </div>
-</div>
-<script>
-function display_ct7() {
-  var x = new Date();
-  var hours = x.getHours().toString().padStart(2, '0');
-  var minutes = x.getMinutes().toString().padStart(2, '0');
-  var seconds = x.getSeconds().toString().padStart(2, '0');
-  var month = (x.getMonth() + 1).toString().padStart(2, '0');
-  var dt = x.getDate().toString().padStart(2, '0');
-  var x1 = dt + "/" + month + "/" + x.getFullYear() + " - " + hours + ":" + minutes + ":" + seconds;
-  
-  document.getElementById('ct7').innerHTML = x1;
-  display_c7();
-}
-
-function display_c7() {
-  var refresh = 1000; // Refresh rate in milliseconds
-  mytime = setTimeout(display_ct7, refresh);
-}
-
-display_c7();
-</script>
-<script>
-var currentLocation = window.location.href;
-setTimeout(function newsId(){			
-$.ajax({
-    type: "GET",
-    url: currentLocation + "#gogo",
-    data: "#gogo",
-    async: true,
-    success: function(result){
-			
-            kpl = "0";
-			clearInterval(mytime);
-           			//setInterval('go()',1000);
-            $("#gogo").html(result);
-			
-}});}	,5000);
-</script>
-</body>
+        100% {
+          transform: translateY(-1000px) rotate(720deg);
+          opacity: 0;
+          border-radius: 50%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <timer-element time-stamp="{{time}}" color="white"></timer-element>
+    <div class="clock" id="ct7"></div>
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div id="gogo">
+      <div id="queue-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Номер</th>
+              <th>Аккредитуемый</th>
+              <th>Кабинет</th>
+              <th>Этаж</th>
+              <th>Время</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if test4|length > 0 %} {% for el in test4[:15] %}
+            <tr>
+              <td>{{ el.id_stud }}</td>
+              <td>{{ el.student }}</td>
+              <td>{{ el.room }}</td>
+              <td>{{ el.room[0] }}</td>
+              <td>{{ el.time_begin }}</td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="module" src="/static/scripts/useTimer.js"></script>
+  </body>
 </html>

@@ -209,7 +209,7 @@ def hall():
 
     i=1
 
-    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i )
+    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp())
 
 @core.route('/floor/<number>')
 def floor(number):
@@ -235,7 +235,7 @@ def floor(number):
     print("schefule-", schedule)
     print("stud-", stud)
     print("tablo-", tablo)
-    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i )
+    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp() )
 
 @core.route('/camcap')
 def camcap():

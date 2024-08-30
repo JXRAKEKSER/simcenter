@@ -47,13 +47,13 @@ tr:nth-child(even) {
 </style>
 <title>Станция</title>
 <script type="module">
-  let date = new Date(Number(document.body.dataset.time) * 1000);
+  /* let date = new Date(Number(document.body.dataset.time) * 1000);
   function updateTime() {
 	date = new Date(date.getTime() + 1000);
 	document.querySelector('#timer').textContent = date.toLocaleString('ru-RU');
   }
   updateTime();
-  setInterval(updateTime, 1000);
+  setInterval(updateTime, 1000); */
 </script>
 <span id='ct7' style="background-color: none"></span>
 <style>
@@ -61,8 +61,8 @@ tr:nth-child(even) {
 </style>
 </head>
 
-<body data-time="{{time}}">
-<span class="timer" id='timer' ></span>
+<body>
+	<timer-element time-stamp="{{time}}" color="#006400"></timer-element>
 
 {% if student_in_room  %}
 <table>
@@ -96,4 +96,5 @@ tr:nth-child(even) {
 {% endif %}
 
 </body>
+<script type="module" src="/static/scripts/useTimer.js"></script>
 </html>

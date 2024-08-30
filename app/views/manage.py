@@ -1,5 +1,8 @@
 from flask import url_for, flash, request, render_template, redirect, Blueprint
 import os
+import pandas as pd
+from io import BytesIO
+
 import zipfile
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
@@ -635,15 +638,25 @@ def dobavit():
         if file.filename == '':
             return render_template('dobavit.html')
 
-        # No need to save the file to disk, read directly from the uploaded file
+        # Проверка на формат файла (должен быть Excel)
+        if not file.filename.endswith(('.xls', '.xlsx')):
+            return render_template('dobavit.html', error='Формат файла должен быть .xls или .xlsx')
+
+        # Удаляем предыдущие записи с такой же датой
         data.Student.query.filter_by(date=date).delete()
         db.session.commit()
 
-        # Read the file stream directly
-        file_stream = file.stream.read().decode('utf-8')
-        reader = csv.DictReader(file_stream.splitlines())
+        # Используем BytesIO для чтения файла из Flask
+        file_stream = BytesIO(file.read())  # Читаем содержимое файла в BytesIO
 
-        for row in reader:
+        # Чтение Excel файла в pandas DataFrame с указанием движка 'openpyxl'
+        try:
+            excel_data = pd.read_excel(file_stream, engine='openpyxl')
+        except Exception as e:
+            return render_template('dobavit.html', error=f'Ошибка чтения файла Excel: {e}')
+
+        # Преобразуем DataFrame в итератор строк
+        for index, row in excel_data.iterrows():
             add_stud = data.Student(
                 person_id=row['person_id'],
                 name=row['name'],
@@ -653,7 +666,7 @@ def dobavit():
             )
             db.session.add(add_stud)
 
-        db.session.commit()  # Commit once after all records are added
+        db.session.commit()  # Сохраняем все изменения за один раз
 
         return render_template('dobavit.html')
     else:

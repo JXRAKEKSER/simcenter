@@ -622,6 +622,7 @@ def specsb_sb():
     else:
         return render_template('specsb.html')
 
+
 @manage_app.route('/dobavit', methods=['GET', 'POST'])
 @login_required
 def dobavit():
@@ -629,30 +630,35 @@ def dobavit():
         date = request.form.get("date")
         if date == '':
             return render_template('dobavit.html')
+
         file = request.files['file']
         if file.filename == '':
             return render_template('dobavit.html')
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(UPLOAD_FOLDER, filename))
 
+        # No need to save the file to disk, read directly from the uploaded file
         data.Student.query.filter_by(date=date).delete()
         db.session.commit()
 
-        with open(UPLOAD_FOLDER + "/" + filename, encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                add_stud = data.Student(person_id=row['person_id'],
-                                            name=row['name'],
-                                            specialization_id=row['specialization'],
-                                            ser_nomer=row['ser_nomer'],
-                                            #personal_number=row['personal_number'],
-                                            date=date,
-                                            )
-                db.session.add(add_stud)
-                db.session.commit()
+        # Read the file stream directly
+        file_stream = file.stream.read().decode('utf-8')
+        reader = csv.DictReader(file_stream.splitlines())
+
+        for row in reader:
+            add_stud = data.Student(
+                person_id=row['person_id'],
+                name=row['name'],
+                specialization_id=row['specialization'],
+                ser_nomer=row['ser_nomer'],
+                date=date,
+            )
+            db.session.add(add_stud)
+
+        db.session.commit()  # Commit once after all records are added
+
         return render_template('dobavit.html')
     else:
         return render_template('dobavit.html')
+
 @manage_app.route('/speci_a', methods=['GET', 'POST'])
 @login_required
 def speci_a():

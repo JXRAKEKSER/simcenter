@@ -505,13 +505,16 @@ def planning():
 
 @core.route('/pult/<room_id>')
 def render_current_students(room_id):
-    currentTime = (datetime.datetime.now() + timedelta(hours=3, minutes=0)).strftime('%H:%M')
+    current_local_date = datetime.datetime.now()
+    current_date_with_offset = current_local_date + timedelta(hours=3, minutes=0)
     
-    student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= currentTime).filter(data.Stud_access.time_end >= currentTime).all()
+    current_time = current_date_with_offset.strftime('%H:%M')
+    
+    student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= current_time).filter(data.Stud_access.time_end >= current_time).all()
 
     if bool(student_in_room_list) == 0:
-        return render_template('tablo2.html', student_in_room=None)
-    return render_template('tablo2.html', student_in_room=student_in_room_list[0])
+        return render_template('tablo2.html', student_in_room=None, time=current_local_date.timestamp())
+    return render_template('tablo2.html', student_in_room=student_in_room_list[0], time=current_local_date.timestamp())
 
 
 """ def pult():

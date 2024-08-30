@@ -95,9 +95,11 @@
       Your browser does not support HTML5 video.
     </video>
     <div class="error" id="error_text"></div>
-    <form class="controls" onsubmit="return false;">
-      <button style="margin: 20px 0 0 0; font-size: 200%;" id="back-to-home">НА ГЛАВНУЮ</button>
-      <button onclick="scan(this)" style="font-size:200%; position:relative; margin: 20px 0 0 0;" id="scan-button">СКАНИРОВАТЬ<span class="spinner"></span></button>    
+    <form class="controls">
+      <input class="controls__input" value="" placeholder="Серия и номер паспорта" id="series-number" required pattern="\d{10}$" />
+      <button type="button" style="font-size: 200%;" id="back-to-home">НА ГЛАВНУЮ</button>
+      <button type="submit" style="font-size: 200%;" id="send-button">ОТПРАВИТЬ</button>
+      <!-- <button onclick="scan(this)" style="font-size:200%; position:relative; margin: 20px 0 0 0;" id="scan-button">СКАНИРОВАТЬ<span class="spinner"></span></button> -->    
   </form>
   </section>
 <!-- <video autoplay muted loop id="myVideo">

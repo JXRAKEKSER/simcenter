@@ -13,16 +13,6 @@
 	  overflow:hidden;
     }
 
-    /* #text {
-      position: absolute;
-      text-align: center;
-      padding: 300px;
-      color: #f1f1f1;
-      top: -100px;
-      right: 80px;
-      font-size: 40px;
-    } */
-
     #error_text {
       position: relative;
       text-align: center;
@@ -37,17 +27,6 @@
       top: 500px;
       right: 750px;
     }
-
-    /* #myVideo {
-      position: fixed;
-      right: 50%;
-      transform: translateX(50%);
-      bottom: -20px;
-      width: 650px;
-      height: 650px;
-      <!--min-width: 100%;
-      min-height: 100%;-->
-    } */
 
     h1 {
       position: absolute;
@@ -89,32 +68,15 @@
 </head>
 <body>
   <section class="manual">
-    <!-- <div class="manual__caption" id="text"><b>Приложите страницу вашего паспорта с фото на сканер, как изображено на видео, и нажмите кнопку СКАНИРОВАТЬ .</b></div>
-    <video class="manual__video" autoplay muted loop id="myVideo">
-      <source src="/static/multimedia/Scanner.mp4" type="video/mp4" />
-      Your browser does not support HTML5 video.
-    </video>
-    <div class="error" id="error_text"></div> -->
-    <p class="manual__caption">Введите серию и номер паспорта без пробелов</p>
+    <p class="manual__caption">Введите свой ID без пробелов</p>
     <form class="controls">
-      <input class="controls__input" value="" placeholder="Серия и номер паспорта" id="series-number" required pattern="\d{10}$" />
+      <input class="controls__input" value="" placeholder="ID" id="series-number" required />
       <button type="button" style="font-size: 200%;" id="back-to-home">НА ГЛАВНУЮ</button>
       <button type="submit" style="font-size: 200%;" id="send-button">ОТПРАВИТЬ</button>
-      <!-- <button onclick="scan(this)" style="font-size:200%; position:relative; margin: 20px 0 0 0;" id="scan-button">СКАНИРОВАТЬ<span class="spinner"></span></button> -->    
+      <a class="controls__redirect" href="{{redirect_to_alt_regist_page}}">У меня нет ID, но есть русский паспорт</a>    
   </form>
   </section>
-<!-- <video autoplay muted loop id="myVideo">
-  <source src="{{ url_for ('static', filename = 'multimedia/Scanner.mp4')}}" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video> -->
-<!--<div id="passport"><img src="im/passport.png" width="430" height="230"></div>-->
-
-
-
 </div>
-
-<!--<h1><b>Поиск Данных</b> </h1>
-<div class="lds-dual-ring"> </div>-->
 <main>
 
   

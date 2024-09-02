@@ -17,6 +17,8 @@ from app.helpers import (reject_operator, reject_no_offices, is_operator, is_off
 #from app.forms.manage import OfficeForm, TaskForm, SearchForm, ProcessedTicketForm
 from app.constants import TICKET_WAITING
 
+from app.utils import generate_qr_code
+
 
 manage_app = Blueprint('manage_app', __name__)
 
@@ -1036,3 +1038,13 @@ def spec():
             return "Ошибка"
     else:
          return render_template('spec.html')
+    
+
+@manage_app.route('/qr', methods=['GET', 'POST'])
+@login_required
+def render_qr_creating_page():
+    if request.method == 'POST':
+        code_to_encoding = request.form['code']
+        qr_code = generate_qr_code(code_to_encoding)
+
+        

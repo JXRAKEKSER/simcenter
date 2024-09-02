@@ -50,6 +50,12 @@ button {
   padding: 10px 15px;
   grid-column: 1/3;
 }
+.controls__redirect {
+  font-size: 36px;
+  color: white;
+  grid-column: 1/3;
+  justify-self: center;
+}
 
 .error {
   height: 40px;

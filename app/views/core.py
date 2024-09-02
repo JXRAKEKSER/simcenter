@@ -655,8 +655,13 @@ def delete():
 @core.route('/regist/en')
 @core.route('/regist/ru')
 def regist():
-    print('regist')
-    return render_template('registration-by-scanner.html')
+    redirect_to_scanner_page = f'/regist-scanner'
+    return render_template('registration-by-manual-input.html', redirect_to_alt_regist_page=redirect_to_scanner_page)
+
+@core.route('/regist-scanner/')
+def regist_by_scanner():
+    redirect_to_manual_input_page = f'/regist'
+    return render_template('registration-by-scanner.html', redirect_to_alt_regist_page=redirect_to_manual_input_page)
 
 @core.route('/view-ticket/<sernomer>')
 def render_ticket_view(sernomer):
@@ -706,18 +711,6 @@ def render_print_view(sernomer, id_stud):
     if bool(suppose_student) != 0:
         id_st = suppose_student[0].person_id
         student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
-        # domain = "SYSTEM"
-        # nameuser = "parsec"
-        # password = "parsec"
-        # session = (client.service.OpenSession(domain, nameuser, password))
-        # sessionID = session.Value.SessionID
-        # lastname = "Student"
-        # firstname = id_st
-        # buf = (client.service.FindPeople(sessionID, lastname, firstname))
-        # PERSON_ID = buf[0].ID
-        # code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
-        # CODE = code1[0].CODE
-        # decimal = int(CODE, 16)
 
         parsec_code = get_parsec_code(id_st)
 

@@ -76,7 +76,7 @@ class Access(db.Model, Mixin):
 class Stud_access(db.Model, Mixin):
     __tablename__ = "stud_access"
     id = db.Column(db.Integer, primary_key=True)
-    id_stud = db.Column(db.Integer, nullable=True)
+    id_stud = db.Column(db.String(45), nullable=True)
     room = db.Column(db.String(45), nullable=True)
     student = db.Column(db.String(100), nullable=True)
     time_begin = db.Column(db.String(200), nullable=True)
@@ -131,7 +131,7 @@ class Specialization(db.Model, Mixin):
 class Student(db.Model, Mixin):
     __tablename__ = "student"
     id = db.Column(db.Integer, primary_key=True)
-    person_id = db.Column(db.Integer)
+    person_id = db.Column(db.String(45))
     name = db.Column(db.String(100))
     specialization_id = db.Column(db.String(200))
     ser_nomer = db.Column(db.String(20))

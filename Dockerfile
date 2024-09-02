@@ -8,11 +8,11 @@ RUN apt-get install espeak -y
 
 WORKDIR /app
 
-COPY ./ .
-
 COPY requirements/main.txt /app/requirements/
 
 RUN pip install --no-cache-dir -r /app/requirements/main.txt
+
+COPY ./ .
 
 EXPOSE 5000
 

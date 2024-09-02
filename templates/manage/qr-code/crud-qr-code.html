@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block title %} Qr-code {% endblock
+%} {%- from "sb_manage.html" import sb_manage with context %} {% block sidebar
+%} {{ sb_manage() }} {% endblock %} {% block page_content %} {% from
+"_helpers.html" import render_field with context %} {% from "_modals.html"
+import qrModal %}
+<section class="page-qr-code">
+  <style>
+    .page-qr-code {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .page-qr-code__empty-code-message {
+        font-size: 36px;
+        font-weight: 500;
+    }
+    .page-qr-code__qr-code {
+        margin: 0 0 20px 0;
+    }
+    .manage-code-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 50%;
+    }
+  </style>
+  {% if qr_code %}
+  <img class="page-qr-code__qr-code" src="data:image;base64,{{ qr_code }}" alt="qr-code" />
+  {% else %}
+  <span class="h3 text-center text-muted ar2">Qr-код отсутствует, создайте его</span>
+  {% endif %}
+  <form class="manage-code-form" action="/qr" method="post">
+    <input class="manage-code-form__input" name="code" value="" placeholder="Значение для кодировки в qr" />
+    <button class="manage-code-form__submit-button btn btn-md btn-danger" type="submit">Создать общий QR</button>
+  </form>
+</section>
+{% endblock %}

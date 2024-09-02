@@ -33,13 +33,16 @@
       {%endfor%}
       </table>
       </section>
+      {% if qr_code %}
       <section class="qr-code">
+        
         <img
           class="qr-code__image"
           src="data:image;base64,{{ qr_code }}"
           alt="qr code"
         />
       </section>
+      {% endif %}
       <section class="controls">
         <button class="action-button" id="back-to-home">
           На главный экран

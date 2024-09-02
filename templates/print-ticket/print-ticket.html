@@ -31,6 +31,7 @@
           </tr>
 		{%endfor%}
     </table>
+    {% if qr_code %}
       <section class="qr-code">
         <img
           class="qr-code__image"
@@ -38,6 +39,7 @@
           alt="qr code"
         />
       </section>
+      {% endif %}
     </main>
   </body>
   <script

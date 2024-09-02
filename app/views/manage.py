@@ -1043,8 +1043,25 @@ def spec():
 @manage_app.route('/qr', methods=['GET', 'POST'])
 @login_required
 def render_qr_creating_page():
+
     if request.method == 'POST':
         code_to_encoding = request.form['code']
         qr_code = generate_qr_code(code_to_encoding)
-
         
+        existed_qr_code = data.QrCode.query.first()
+        if not existed_qr_code:
+            created_qr = data.QrCode(source=qr_code)
+            db.session.add(created_qr)
+        else:
+            data.QrCode.query.filter_by(id=existed_qr_code.id).update({ 'source': qr_code })
+
+        db.session.commit()
+
+        return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code, existed_qr_code=existed_qr_code)
+    
+    if request.method == 'GET':
+        qr_code = data.QrCode.query.first()
+        if not qr_code:
+            return render_template('/manage/qr-code/crud-qr-code.html', qr_code=None)    
+        return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code.source)
+

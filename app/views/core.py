@@ -679,10 +679,11 @@ def render_ticket_view(sernomer):
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        parsec_code = get_parsec_code(id_st)
+        qr_enity = data.QrCode.query.first()
+        qr_code = None
+        if qr_enity:
+            qr_code = qr_enity.source
         
-        qr_code = generate_qr_code(parsec_code)
-
         redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
 
         return render_template('ticket/ticket.html', student=student_with_access, qr_code=qr_code, redirect_to_print_url=redirect_print_url)
@@ -706,18 +707,18 @@ def render_print_view(sernomer, id_stud):
     #student = studentService.get_student_by_serial_code(serial_code=sernomer)
     if id_stud == 1:
         redir="/vvesti"
-    # client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
     suppose_student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
     if bool(suppose_student) != 0:
         id_st = suppose_student[0].person_id
         student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
 
-        parsec_code = get_parsec_code(id_st)
-
         if bool(student_with_access) == 0:
             return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        qr_code = generate_qr_code(parsec_code)
+        qr_enity = data.QrCode.query.first()
+        qr_code = None
+        if qr_enity:
+            qr_code = qr_enity.source
         return render_template('print-ticket/print-ticket.html', student=student_with_access, qr_code=qr_code, redirect_url=redir)
     else:
         return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='На сегодня для вас нет запланированного экзамена'))

@@ -182,7 +182,10 @@ class Worktime(db.Model, Mixin):
     break_start = db.Column(db.DateTime)
     break_end = db.Column(db.DateTime)
 
-
+class QrCode(db.Model, Mixin):
+    __tablename__ = 'qr_code'
+    id = db.Column(db.Integer, primary_key=True)
+    source = db.Column(db.Text)
 """
 class Office(db.Model, Mixin):
     __tablename__ = "offices"

@@ -137,6 +137,8 @@ class Student(db.Model, Mixin):
     ser_nomer = db.Column(db.String(20))
     personal_number = db.Column(db.String(45))
     date = db.Column(db.String(200))
+    login = db.Column(db.String(200))  # Логин минздрав
+    password = db.Column(db.String(200))  # Пароль минздрав
 
 
     def __repr__(self):

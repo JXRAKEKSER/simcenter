@@ -659,9 +659,12 @@ def dobavit():
         for index, row in excel_data.iterrows():
             add_stud = data.Student(
                 person_id=row['person_id'],
+                person_number=row['person_id'],
                 name=row['name'],
                 specialization_id=row['specialization'],
                 ser_nomer=row['ser_nomer'],
+                login=row['login'],
+                password=row['password'],
                 date=date,
             )
             db.session.add(add_stud)
@@ -777,8 +780,10 @@ def insert():
         ser_nomer = request.form['ser_nomer']
         person_id = request.form['personal_number']
         date = request.form['date']
+        password = request.form['password']
+        login = request.form['login']
 
-        stud = data.Student(name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=person_id, person_id=person_id, date=date)
+        stud = data.Student(name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=person_id, person_id=person_id, date=date, password=password, login=login)
         db.session.add(stud)
         db.session.commit()
 
@@ -827,8 +832,12 @@ def update(id):
         ser_nomer = request.form['ser_nomer']
         person_id = request.form['personal_number']
         date = request.form['date']
+        password = request.form['password']
+        login = request.form['login']
+
         #stud = data.Student(id=id, name=name, specialization_id=specialization_id, ser_nomer=ser_nomer, personal_number=personal_number, date=date)
-        data.Student.query.filter_by(id=id).update({'id':id, 'name':name, 'specialization_id':specialization_id, 'ser_nomer':ser_nomer, 'personal_number':person_id, 'person_id': person_id, 'date':date})
+        data.Student.query.filter_by(id=id).update({'id':id, 'name':name, 'specialization_id':specialization_id, 'ser_nomer':ser_nomer, 'personal_number':person_id, 'person_id': person_id, 'date':date,
+                                                    'password': password, 'login': login})
         db.session.commit()
         flash("Student Updated Successfully")
         return redirect(url_for('manage_app.vvesti'))

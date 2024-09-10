@@ -3,8 +3,9 @@
 @import url(../blocks/student-info/student-info.css);
 @import url(../blocks/student-info/__id/student-info__id.css);
 @import url(../blocks/student-info/__id/_color/student-info__id_color_black.css);
-@import url(../blocks/student-info/__fio/student-info__fio.css);
-@import url(../blocks/student-info/__fio/_color/student-info__fio_color_black.css);
+@import url(../blocks/student-info/__id/_accent/student-info__id_accent.css);
+@import url(../blocks/student-info/__credentials/student-info__credentials.css);
+@import url(../blocks/student-info/__credentials/_color/student-info__credentials_color_black.css);
 
 .body {
     background-image: none;

@@ -12,10 +12,10 @@
     </header>
     <main class="main">
       <section class="student-info">
-        <span class="student-info__id"
-          >Индивидуальный номер: {{ student[0].id_stud }}</span
-        >
-        <span class="student-info__fio">Аккредитуемый: {{ student[0].student }}</span>
+        <p class="student-info__id"
+          >ID: <span class="student-info__id_accent">{{ student[0].id_stud }}</span></p>
+        <span class="student-info__credentials">Логин {{ login }}</span>
+        <span class="student-info__credentials">Пароль {{ password }}</span>
       </section>
       <section class="schedule">
         <table id="schedule" class="center" style="color: white;">

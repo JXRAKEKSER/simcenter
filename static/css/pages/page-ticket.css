@@ -2,7 +2,8 @@
 @import url(../blocks/action-button/action-button.css);
 @import url(../blocks/student-info/student-info.css);
 @import url(../blocks/student-info/__id/student-info__id.css);
-@import url(../blocks/student-info/__fio/student-info__fio.css);
+@import url(../blocks/student-info/__id/_accent/student-info__id_accent.css);
+@import url(../blocks/student-info/__credentials/student-info__credentials.css);
 
 .main {
     display: flex;

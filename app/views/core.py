@@ -663,35 +663,31 @@ def regist_by_scanner():
     redirect_to_manual_input_page = f'/regist'
     return render_template('registration-by-scanner.html', redirect_to_alt_regist_page=redirect_to_manual_input_page)
 
-@core.route('/view-ticket/<sernomer>')
-def render_ticket_view(sernomer):
+@core.route('/view-ticket/<person_id>')
+def render_ticket_view(person_id):
     #studentService = StudentService()
     a = datetime.datetime.now()
     b = timedelta(hours=2, minutes=55)
     c = a+b
     d1 = c.strftime("%d.%m.%Y")
 
-    suppose_student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
-    if bool(suppose_student) != 0:
-        id_st = suppose_student[0].person_id
-        student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
+    student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.person_id == person_id).all()
+    student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == person_id).all()
         
-        if bool(student_with_access) == 0:
-            return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
+    if bool(student_with_access) == 0 or bool(student) == 0:
+        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        qr_enity = data.QrCode.query.first()
-        qr_code = None
-        if qr_enity:
-            qr_code = qr_enity.source
+    qr_enity = data.QrCode.query.first()
+    qr_code = None
+    if qr_enity:
+        qr_code = qr_enity.source
         
-        redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
+    redirect_print_url = f'/print-ticket/{person_id}'
 
-        return render_template('ticket/ticket.html', student=student_with_access, qr_code=qr_code, redirect_to_print_url=redirect_print_url)
-    else:
-        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='Студент с указанным номером паспорта не найден'))
+    return render_template('ticket/ticket.html', student=student_with_access, login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_to_print_url=redirect_print_url)
 
-@core.route('/print-ticket/<sernomer>/<int:id_stud>')
-def render_print_view(sernomer, id_stud):
+@core.route('/print-ticket/<int:id_stud>/')
+def render_print_view(id_stud):
     a = datetime.datetime.now()
     b = timedelta(hours=2, minutes=55)
     m = timedelta(hours=3, minutes=1)
@@ -705,23 +701,20 @@ def render_print_view(sernomer, id_stud):
     #studentService = StudentService()
 
     #student = studentService.get_student_by_serial_code(serial_code=sernomer)
-    if id_stud == 1:
-        redir="/vvesti"
-    suppose_student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
-    if bool(suppose_student) != 0:
-        id_st = suppose_student[0].person_id
-        student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
+    """ if id_stud == 1:
+        redir="/vvesti" """
+    student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.person_id == id_stud).all()
+    student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_stud).all()
 
-        if bool(student_with_access) == 0:
-            return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
-        
-        qr_enity = data.QrCode.query.first()
-        qr_code = None
-        if qr_enity:
-            qr_code = qr_enity.source
-        return render_template('print-ticket/print-ticket.html', student=student_with_access, qr_code=qr_code, redirect_url=redir)
-    else:
-        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='На сегодня для вас нет запланированного экзамена'))
+    if bool(student_with_access) == 0 or bool(student) == 0:
+        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
+    
+    qr_enity = data.QrCode.query.first()
+    qr_code = None
+    if qr_enity:
+        qr_code = qr_enity.source
+    return render_template('print-ticket/print-ticket.html', student=student_with_access, login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
+    
 
 @core.route('/error-ticket/')
 def render_error_page():

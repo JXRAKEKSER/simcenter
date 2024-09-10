@@ -2,12 +2,19 @@ const backToHome = document.querySelector("#back-to-home");
 const sendButton = document.querySelector("#send-button");
 const [ form ] = document.forms;
 const inputSeries = form.querySelector('#series-number');
+const keyboard = document.getElementById('keyboard-element');
 
 let text123 = document.querySelector("text1234");
 
 let attempts = 0;
 
 backToHome.addEventListener("click", redirectToHome);
+keyboard.addEventListener('key-clicked', (event) => {
+  if (event.detail.keyValue === 'delete') {
+    return inputSeries.value = inputSeries.value.slice(0, -1);
+  }
+  inputSeries.value+= event.detail.keyValue;
+})
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();

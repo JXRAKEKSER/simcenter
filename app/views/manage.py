@@ -573,22 +573,72 @@ def monik():
         mon = data.Stud_access.query.all()
         return render_template('monitors.html', mon=mon)
 
-@manage_app.route('/cabin', methods=['GET', 'POST'] )
-@login_required
-def cabin():
-    a = datetime.now()
+# @manage_app.route('/cabin', methods=['GET', 'POST'] )
+# @login_required
+# def cabin():
+#     a = datetime.now()
+#
+#     b = timedelta(hours=3, minutes=0)
+#     c = a + b
+#     d1 = c.strftime("%d.%m.%Y")
+#     if request.method == "POST":
+#         cab = data.Room.query.all()
+#         cabs = data.Stud_access.query.filter(data.Stud_access.date==d1).all()
+#         return render_template('cabinate.html', cab=cab, cabs=cabs)
+#     else:
+#         cab = data.Room.query.all()
+#         cabs = data.Stud_access.query.filter(data.Stud_access.date==d1).all()
+#         return render_template('cabinate.html', cab=cab, cabs=cabs)
 
-    b = timedelta(hours=3, minutes=0)
-    c = a + b
-    d1 = c.strftime("%d.%m.%Y")
+@manage_app.route('/cabin', methods=['GET'])
+@login_required
+def get_all_rooms():
+    """Чтение всех комнат."""
+    rooms = data.Room.query.all()
+    return render_template('cabinate.html', cab=rooms)
+
+
+@manage_app.route('/cabin', methods=['POST'])
+@login_required
+def create_room():
+    """Создание новой комнаты."""
     if request.method == "POST":
-        cab = data.Room.query.all()
-        cabs = data.Stud_access.query.filter(data.Stud_access.date==d1).all()
-        return render_template('cabinate.html', cab=cab, cabs=cabs)
-    else:
-        cab = data.Room.query.all()
-        cabs = data.Stud_access.query.filter(data.Stud_access.date==d1).all()
-        return render_template('cabinate.html', cab=cab, cabs=cabs)
+        room_number = request.form['number']
+        room_name = request.form['name']
+        room_ip = request.form['ip']
+
+        new_room = data.Room(number=room_number, name=room_name, ip=room_ip)
+        db.session.add(new_room)
+        db.session.commit()
+
+        return redirect(url_for('manage_app.get_all_rooms'))
+
+
+@manage_app.route('/cabin/<int:id>', methods=['POST'])
+@login_required
+def update_room(id):
+    """Обновление информации о комнате."""
+    room = data.Room.query.get_or_404(id)
+
+    if request.method == "POST":
+        room.number = request.form['number']
+        room.name = request.form['name']
+        room.ip = request.form['ip']
+
+        db.session.commit()
+        return redirect(url_for('manage_app.get_all_rooms'))
+
+
+@manage_app.route('/cabin/<int:id>', methods=['GET'])
+@login_required
+def delete_room(id):
+    """Удаление комнаты."""
+    room = data.Room.query.get_or_404(id)
+    db.session.delete(room)
+    db.session.commit()
+
+    return redirect(url_for('manage_app.get_all_rooms'))
+
 
 @manage_app.route('/histo', methods=['GET', 'POST'] )
 @login_required
@@ -846,6 +896,10 @@ def update(id):
 @manage_app.route('/plan', methods=['GET', 'POST'])
 @login_required
 def plan():
+
+    rooms = data.Room.query.all()
+    rooms = [{'id': room.id, 'number': room.number} for room in rooms]
+
     if request.method == "POST":
         print(request)
         specialization = data.Specialization.query.all()
@@ -994,11 +1048,11 @@ def plan():
             rx = cx
             fx = mx
             i += 1
-        return render_template('planning.html', specialization=specialization)
+        return render_template('planning.html', specialization=specialization, rooms=rooms)
 
     else:
         specialization = data.Specialization.query.all()
-        return render_template('planning.html', specialization=specialization)
+        return render_template('planning.html', specialization=specialization, rooms=rooms)
 
 
 @manage_app.route('/station', methods=['GET', 'POST'])

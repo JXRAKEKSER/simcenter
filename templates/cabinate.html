@@ -1,9 +1,5 @@
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
 {% extends "base.html" %}
-{% block title %} AKT - {{ page_title  }} {% endblock %}
+{% block title %} AKT - {{ page_title }} {% endblock %}
 
 {%- from "sb_manage.html" import sb_manage with context %}
 {% block sidebar %}
@@ -14,122 +10,119 @@
 {% from "_helpers.html" import render_field with context %}
 {% from "_modals.html" import qrModal %}
 
-
-
-
 <div class="col-md-12">
-		<div class="panel panel-default">
-	    	<div class="panel-body">
-				<h3>cabin</h3>
-				
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Комнаты</h3>
+            <!-- Кнопка для создания новой комнаты -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createRoomModal">
+                Добавить комнату
+            </button>
 
-	
-<table class="table table-hover table-striped" id="test">
-                    <tr>
-                        <th>Кабинеты</th> 
-                    </tr>
-					{% if cab|length > 0 %}  
-					{%for el in cab|sort(attribute='id')%}
-					
-					<tr data-id="1">
-                        <td><button type="button" class="btn btn-link" data-toggle="modal" data-target="#{{el.id}}" style="color:#04a5d1;font-size: 30px"><b>{{el.number}}<b></button></td>
-						</tr>
-						
-						{%endfor%}
-			{% endif %}
-    </table>
+            <table class="table table-hover table-striped" id="test">
+                <tr>
+                    <th>Номер</th>
+                    <th>Название</th>
+                    <th>Действия</th>
+                </tr>
+                {% if cab|length > 0 %}
+                {% for el in cab|sort(attribute='id') %}
+                <tr>
+                    <td>{{ el.number }}</td>
+                    <td>{{ el.name }}</td>
+                    <td>
+                        <!-- Кнопка для редактирования комнаты -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRoomModal{{ el.id }}">
+                            Редактировать
+                        </button>
 
+                        <!-- Кнопка для удаления комнаты -->
+                        <form action="{{ url_for('manage_app.delete_room', id=el.id) }}" method="GET" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
 
-	{% if cab|length > 0 %}  
-			{% for pp in cab|sort(attribute='id') %}
-			
-  <div class="modal fade" id="{{pp.id}}" role="dialog">
-    <div class="modal-dialog modal-xl" style="width:1000px;">
+                <!-- Модальное окно для редактирования комнаты -->
+                <div class="modal fade" id="editRoomModal{{ el.id }}" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Редактировать комнату</h4>
+                            </div>
+                            <form action="{{ url_for('manage_app.update_room', id=el.id) }}" method="POST">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="number">Номер комнаты:</label>
+                                        <input type="text" class="form-control" name="number" value="{{ el.number }}">
+                                    </div>
+                                    <div class="form-group">
+                                           <label for="name">Название комнаты:</label>
+                                        <input type="text" class="form-control" name="name" value="{{ el.name }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ip">IP комнаты:</label>
+                                        <input type="text" class="form-control" name="ip" value="{{ el.ip }}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </table>
 
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">head</h4>
+            <!-- Модальное окно для создания новой комнаты -->
+            <div class="modal fade" id="createRoomModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Добавить новую комнату</h4>
+                        </div>
+                        <form action="{{ url_for('manage_app.create_room') }}" method="POST">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="number">Номер комнаты:</label>
+                                    <input type="text" class="form-control" name="number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Название комнаты:</label>
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ip">IP комнаты:</label>
+                                    <input type="text" class="form-control" name="ip">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Добавить комнату</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="modal-body">
-          <p>testing.</p>
-		  <div class="container" style="width:100%">
-		<div class="el">
-        <div class="col md-12">
-		<div class="jumbotron p-3">
-
-		  <table id="myTable" class="table table-hover table-striped" >
-					<tr data-id="1">
-						<th>ID</th>
-						<th>ФИО</th>	
-						<th>Специальность</th>
-						<th>Время начала</th>
-						<th>Время окончания</th>
-
-                    </tr>
-					{% if cabs|length > 0 %}  
-					{%for el in cabs|sort(attribute='id') %}
-					
-					{% if el.room == pp.number|string() %} 
-					
-					<tr>
-						<td>{{el.id_stud}}</td>
-						<td>{{el.student}}</td>
-						<td>{{el.specialization}}</td>
-						<td>{{el.time_begin}}</td>
-						<td>{{el.time_end}}</td>
-						</tr>
-						
-	 {% endif %}
-						{%endfor%}
-			{% endif %}
-		  </table>
-
-		  
-		  </div>
-		</div>
-		</div>
-		</div>
-		  		  
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
     </div>
-  </div>
-			  {%endfor%}
-			{% endif %}
-	
-
+</div>
 
 <script>
-var arr = $("#test tr");
-
- $("#test tr").each(function () {
-     var txt = $("td:first-child", $(this)).text();
-     if (arr[txt]) $(this).remove();
-     else arr[txt] = true;
- });
+    // Удаление дублирующихся строк таблицы (если необходимо)
+    var arr = $("#test tr");
+    $("#test tr").each(function () {
+        var txt = $("td:first-child", $(this)).text();
+        if (arr[txt]) $(this).remove();
+        else arr[txt] = true;
+    });
 </script>
-<!--
-<script>
-var arr = $("#myTable tr");
 
- $("#myTable tr").each(function () {
-     var txt = $("td:first-child", $(this)).text();
-     if (arr[txt]) $(this).remove();
-     else arr[txt] = true;
- });
-</script>
--->				
-		
- 
-			</div>					
-			</div>	
-		</div>
-	
-
-{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

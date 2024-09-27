@@ -12,27 +12,14 @@
         <span style="text-align: center;" class="student-info__id student-info__id_color_black student-info__id_accent">{{ student[0].id_stud }}</span>
       </section>
       <section class="ticket-data">
-        <span class="ticket-data__credentials"
+        <div class="access ticket-data__access">
+          <span class="access__credentials"
           >Логин: {{ login }}</span
         >
-        <span class="ticket-data__credentials">Пароль: {{ password }}</span>
-        <h2 class="ticket-data__title">Индивидуальный маршрутный лист прохождения аккредитации по специальности &laquo;Лечебное дело&raquo;</h2>
-        <table id="schedule" class="ticket-data__schedule" style="border-collapse: collapse;">
-          <tr style="background-color: black; color: white;">
-            <td colspan="3" style="text-align:center;  font-size: 36px; height: fit-content;" ><b>&num;</td>
-            <td colspan="3" style="font-size: 45px; height: fit-content;"><b>Станция</td>
-            <td colspan="3" style="text-align:center; font-size: 36px; width: 1%; height: fit-content;"><b>&numero;<br/> кабинета</b></td>
-          </tr>
-              {%for el in mocked_data %}
-            <tr style="font-size: 36px;">
-              <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;"><b>{{loop.index}}</td>
-              <td colspan="3" style="height:20px; border: 1px solid black;"><b>{{el.name}}</td>
-              <td style="text-align:center; height:20px; border: 1px solid black;"><b>{{el.number}}</td>
-            </tr>
-      {%endfor%}
-      </table>
-      {% if qr_code %}
-        <section class="qr-code ticket-data__qr-code">
+        <span class="access__credentials">Пароль: {{ password }}</span>
+        <span class="access__credentials">Индивидуальный маршрутный лист прохождения аккредитации по специальности &laquo;Лечебное дело&raquo;</span>
+        {% if qr_code %}
+        <section class="qr-code access__qr-code">
           <img
             class="qr-code__image"
             src="data:image;base64,{{ qr_code }}"
@@ -40,6 +27,21 @@
           />
         </section>
         {% endif %}
+        </div>
+        <table id="schedule" class="ticket-data__schedule" style="border-collapse: collapse;">
+          <tr style="background-color: black; color: white; font-size: 20px">
+            <td colspan="3" style="text-align:center;   height: fit-content;" >&num;</td>
+            <td colspan="3" style=" height: fit-content;">Станция</td>
+            <td colspan="3" style="text-align:center; width: 1%; height: fit-content;">&numero;<br/> кабинета</td>
+          </tr>
+              {%for el in mocked_data %}
+            <tr style="font-size: 15px;">
+              <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;">{{loop.index}}</td>
+              <td colspan="3" style="height:20px; border: 1px solid black;">{{el.name}}</td>
+              <td style="text-align:center; height:20px; border: 1px solid black;">{{el.number}}</td>
+            </tr>
+      {%endfor%}
+      </table>
       </section>
     </main>
   </body>

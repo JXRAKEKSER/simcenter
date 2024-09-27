@@ -4,6 +4,7 @@
     gap: 5px;
 }
 .student-info_mode_print {
-    width: 100vw;
+    width: 100%;
+    box-sizing: border-box;
     border: 2px solid black;
 }

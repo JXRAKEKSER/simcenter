@@ -17,42 +17,54 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-
+    width: 561px;
+    height: 793px;
     min-height: 100%;
 }
 .ticket-data {
-    display: grid;
-    grid-template-columns: 1fr max-content;
+    display: flex;
+    flex-direction: column;
     gap: 5px;
 }
-.ticket-data__credentials {
-    grid-column: 1/2;
-    grid-row: 1;
-    font-size: 36px;
-    font-weight: 700;
-}
+
 
 .ticket-data__title {
     grid-column: 1/2;
     grid-row: 3;
-    font-size: 36px;
+    font-size: 20px;
     font-weight: 700;
     margin: 5px 0 0 0;
 }
 
-.ticket-data__credentials:last-of-type {
-    grid-row: 2;
-}
+
 
 .ticket-data__schedule {
     grid-column: 1/2;
     grid-row: 4;
 }
-.ticket-data__qr-code {
+
+.access {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+}
+.access__qr-code {
     grid-column: 2/3;
-    grid-row: 4;
+    grid-row: 1/4;
 }
 .qr-code__image {
+    width: 100%;
     background-color: white;
-    height: 100%;
+}
+.access__credentials {
+    grid-column: 1/2;
+    grid-row: 1;
+    font-size: 15px;
+    font-weight: 700;
+    align-self: center;
+}
+.access__credentials:nth-child(2) {
+    grid-row: 2;
+}
+.access__credentials:last-of-type {
+    grid-row: 3;
 }

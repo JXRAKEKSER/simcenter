@@ -713,7 +713,8 @@ def render_print_view(id_stud):
     qr_code = None
     if qr_enity:
         qr_code = qr_enity.source
-    return render_template('print-ticket/print-ticket.html', student=student_with_access, login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
+    mocked_data = [{ "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Внутривенная иньекция", "number": "1.4" }]
+    return render_template('print-ticket/print-ticket.html', student=student_with_access, mocked_data=mocked_data,  login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
     
 
 @core.route('/error-ticket/')

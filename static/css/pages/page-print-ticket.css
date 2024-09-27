@@ -20,8 +20,39 @@
 
     min-height: 100%;
 }
+.ticket-data {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: 5px;
+}
+.ticket-data__credentials {
+    grid-column: 1/2;
+    grid-row: 1;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.ticket-data__title {
+    grid-column: 1/2;
+    grid-row: 3;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 5px 0 0 0;
+}
+
+.ticket-data__credentials:last-of-type {
+    grid-row: 2;
+}
+
+.ticket-data__schedule {
+    grid-column: 1/2;
+    grid-row: 4;
+}
+.ticket-data__qr-code {
+    grid-column: 2/3;
+    grid-row: 4;
+}
 .qr-code__image {
     background-color: white;
-    padding: 10px;
-    border-radius: 10px;
+    height: 100%;
 }

@@ -921,7 +921,7 @@ def plan():
         ab = int(request.form.get('time_ek'))  # длительность экзамена  # длительность экзамена
         ac = int(request.form.get('time_pod')) # длительность экзамена  # длительность перерыва
         t = ab + ac  # время волны
-        room_11 = request.form.getlist("contact[]")
+        room_11 = request.form.getlist("contact1[]")
         room_1 = []
         print(room_11)
         print(len(room_1))

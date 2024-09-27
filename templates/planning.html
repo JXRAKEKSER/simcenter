@@ -88,7 +88,7 @@ input[type=text], select {
                 <!-- Room selection for flow 1 -->
 <h3 style="font-size:30px; color:#0377fc"><b>Список кабинетов для 1 потока<b></h3>
                         <div id="rooms-container-1">
-                            <select name="contact[]" class="room-dropdown-1" style="width: 40%">
+                            <select name="contact1[]" class="room-dropdown-1" style="width: 40%">
                                 <option value="">-- Select Room --</option>
                                 {% for room in rooms %}
                                     <option value="{{ room.number }}">{{ room.number }}</option>

@@ -709,7 +709,7 @@ def dobavit():
         for index, row in excel_data.iterrows():
             add_stud = data.Student(
                 person_id=row['person_id'],
-                person_number=row['person_id'],
+                personal_number=row['person_id'],
                 name=row['name'],
                 specialization_id=row['specialization'],
                 ser_nomer=row['ser_nomer'],

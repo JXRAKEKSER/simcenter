@@ -45,7 +45,8 @@
 
 .access {
     display: grid;
-    grid-template-columns: 1fr 100px;
+    grid-template-columns: 1fr 150px;
+    grid-template-rows: repeat(2, max-content) 1fr;
 }
 .access__qr-code {
     grid-column: 2/3;
@@ -58,7 +59,7 @@
 .access__credentials {
     grid-column: 1/2;
     grid-row: 1;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     align-self: center;
 }
@@ -67,4 +68,6 @@
 }
 .access__credentials:last-of-type {
     grid-row: 3;
+    font-size: 15px;
+    align-self: flex-start;
 }

@@ -8,8 +8,8 @@
   </head>
   <body class="body" data-redirect-url="{{redirect_url}}">
     <main class="main">
-      <section class="student-info student-info_mode_print">
-        <span style="text-align: center;" class="student-info__id student-info__id_color_black student-info__id_accent">{{ student[0].id_stud }}</span>
+      <section class="student-info">
+        <span style="text-align: center;" class="student-info__id student-info__id_color_black student-info__id_accent">{{ person_id }}</span>
       </section>
       <section class="ticket-data">
         <div class="access ticket-data__access">
@@ -17,7 +17,7 @@
           >Логин: {{ login }}</span
         >
         <span class="access__credentials">Пароль: {{ password }}</span>
-        <span class="access__credentials">Индивидуальный маршрутный лист прохождения аккредитации по специальности &laquo;Лечебное дело&raquo;</span>
+        <span class="access__credentials">Индивидуальный маршрутный лист прохождения аккредитации по специальности &laquo;{{ specialization }}&raquo;</span>
         {% if qr_code %}
         <section class="qr-code access__qr-code">
           <img
@@ -34,7 +34,7 @@
             <td colspan="3" style=" height: fit-content;">Станция</td>
             <td colspan="3" style="text-align:center; width: 1%; height: fit-content;">&numero;<br/> кабинета</td>
           </tr>
-              {%for el in mocked_data %}
+              {%for el in rooms %}
             <tr style="font-size: 15px;">
               <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;">{{loop.index}}</td>
               <td colspan="3" style="height:20px; border: 1px solid black;">{{el.name}}</td>

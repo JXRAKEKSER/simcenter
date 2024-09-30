@@ -713,8 +713,23 @@ def render_print_view(id_stud):
     qr_code = None
     if qr_enity:
         qr_code = qr_enity.source
-    mocked_data = [{ "name": "Экстренная медицинская помощьЭкстренная медицинская помощьЭкстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Внутривенная иньекция", "number": "1.4" }]
-    return render_template('print-ticket/print-ticket.html', student=student_with_access, mocked_data=mocked_data,  login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
+    
+    all_rooms = data.Room.query.all()
+    rooms_for_student = []
+    
+    def rooms_to_dict(rooms: list) -> dict:
+        rooms_dict = {}
+        for room in rooms:
+            rooms_dict.update({ f'{room.number}': room.name })
+        return rooms_dict
+    
+    rooms_dict = rooms_to_dict(all_rooms)
+
+    for plan_row in student_with_access:
+        target_room = rooms_dict.get(plan_row.room, 'Комната')
+        rooms_for_student.append({"name": target_room, "number": plan_row.room})
+            
+    return render_template('print-ticket/print-ticket.html', person_id=student[0].person_id, specialization=student[0].specialization_id, rooms =rooms_for_student,  login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
     
 
 @core.route('/error-ticket/')

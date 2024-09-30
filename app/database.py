@@ -109,7 +109,7 @@ class Room(db.Model, Mixin):
     __tablename__ = "room"
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     number = db.Column(db.String(45), nullable=True)
-    name = db.Column(db.String(45), nullable=True)
+    name = db.Column(db.Text, nullable=True)
     ip = db.Column(db.String(45), nullable=True)
 
 

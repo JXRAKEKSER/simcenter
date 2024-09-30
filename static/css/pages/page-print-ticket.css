@@ -69,5 +69,5 @@
 .access__credentials:last-of-type {
     grid-row: 3;
     font-size: 15px;
-    align-self: flex-start;
+    align-self: flex-end;
 }

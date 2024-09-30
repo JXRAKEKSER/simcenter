@@ -564,6 +564,21 @@ def raspis():
         raa = data.Stud_access.query.all()
         return render_template('raspisaniye.html', ra=ra, raa=raa)
 
+@manage_app.route('/raspis/delete', methods=['POST'] )
+@login_required
+def remove_students_with_access():
+    is_remove_all = request.form.get('removeAll')
+    is_remove_old = request.form.get('removeOld')
+
+    if is_remove_all:
+        data.Stud_access.query.delete()
+    if is_remove_old:
+        data.Stud_access.query.filter(data.Stud_access.date < datetime.now().strftime("%d.%m.%Y")).delete()
+    db.session.commit()
+    """ ra = data.Stud_access.query.all()
+    raa = data.Stud_access.query.all() """
+    return redirect(url_for('manage_app.raspis'))
+
 
 @manage_app.route('/monik', methods=['GET', 'POST'] )
 @login_required
@@ -916,7 +931,7 @@ def plan():
         all_rooms = request.form.getlist("contact[]") + request.form.getlist("contact2[]") + request.form.getlist("contact3[]")
         for room in all_rooms:
             data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).filter(data.Stud_access.room == room).delete()
-        
+        data.Stud_access.query.filter(data.Stud_access.date < datetime.now().strftime("%d.%m.%Y")).delete()
         #stud_acc = data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).delete()
         #stud_a = data.Stud_access.query.filter_by(date=date).order_by(data.Stud_access.id_stud.desc()).all()
         #if bool(stud_acc) != 0:

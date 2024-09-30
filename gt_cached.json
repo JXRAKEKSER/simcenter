@@ -2411,6 +2411,12 @@
         "fr": "\u00c9cran tactile QR code",
         "it": "Touch screen con codice QR"
     },
+    "Qr-code": {
+        "en": "Qr-code"
+    },
+    "Qr-\u043a\u043e\u0434": {
+        "en": "Qr-\u043a\u043e\u0434"
+    },
     "Queue Planning ": {
         "en": "Queue Planning "
     },

@@ -209,7 +209,7 @@ def hall():
 
     i=1
 
-    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i )
+    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp())
 
 @core.route('/floor/<number>')
 def floor(number):
@@ -235,7 +235,7 @@ def floor(number):
     print("schefule-", schedule)
     print("stud-", stud)
     print("tablo-", tablo)
-    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i )
+    return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp() )
 
 @core.route('/camcap')
 def camcap():
@@ -503,11 +503,22 @@ def planning():
 
     return render_template('planning.html')
 
-@core.route('/pult')
+@core.route('/pult/<room_id>')
+def render_current_students(room_id):
+    current_local_date = datetime.datetime.now()
+    current_date_with_offset = current_local_date + timedelta(hours=3, minutes=0)
+    
+    current_time = current_date_with_offset.strftime('%H:%M')
+    
+    student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= current_time).filter(data.Stud_access.time_end >= current_time).all()
+
+    if bool(student_in_room_list) == 0:
+        return render_template('tablo2.html', student_in_room=None, time=current_local_date.timestamp())
+    return render_template('tablo2.html', student_in_room=student_in_room_list[0], time=current_local_date.timestamp())
 
 
-
-def pult():
+""" def pult():
+    return render_template('tablo2.html')
     access = data.Stud_access.query.all()
 
     data.Stud_access.query.delete()
@@ -631,7 +642,7 @@ def pult():
         fx = mx
         i += 1
 
-    return render_template('tablo2.html')
+    return render_template('tablo2.html') """
 def create():
 
     os.mknod(r'C:\Users\1\Pictures\rezerv\2.txt')
@@ -644,36 +655,39 @@ def delete():
 @core.route('/regist/en')
 @core.route('/regist/ru')
 def regist():
-    print('regist')
-    return render_template('regist.html')
+    redirect_to_scanner_page = f'/regist-scanner'
+    return render_template('registration-by-manual-input.html', redirect_to_alt_regist_page=redirect_to_scanner_page)
 
-@core.route('/view-ticket/<sernomer>')
-def render_ticket_view(sernomer):
+@core.route('/regist-scanner/')
+def regist_by_scanner():
+    redirect_to_manual_input_page = f'/regist'
+    return render_template('registration-by-scanner.html', redirect_to_alt_regist_page=redirect_to_manual_input_page)
+
+@core.route('/view-ticket/<person_id>')
+def render_ticket_view(person_id):
     #studentService = StudentService()
     a = datetime.datetime.now()
     b = timedelta(hours=2, minutes=55)
     c = a+b
     d1 = c.strftime("%d.%m.%Y")
 
-    suppose_student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
-    if bool(suppose_student) != 0:
-        id_st = suppose_student[0].person_id
-        student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
+    student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.person_id == person_id).all()
+    student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == person_id).all()
         
-        if bool(student_with_access) == 0:
-            return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
+    if bool(student_with_access) == 0 or bool(student) == 0:
+        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
         
-        parsec_code = get_parsec_code(id_st)
-        qr_code = generate_qr_code(parsec_code)
+    qr_enity = data.QrCode.query.first()
+    qr_code = None
+    if qr_enity:
+        qr_code = qr_enity.source
+        
+    redirect_print_url = f'/print-ticket/{person_id}'
 
-        redirect_print_url = f'/print-ticket/{sernomer}/{id_st}'
+    return render_template('ticket/ticket.html', student=student_with_access, login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_to_print_url=redirect_print_url)
 
-        return render_template('ticket/ticket.html', student=student_with_access, qr_code=qr_code, redirect_to_print_url=redirect_print_url)
-    else:
-        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='Студент с указанным номером паспорта не найден'))
-
-@core.route('/print-ticket/<sernomer>/<int:id_stud>')
-def render_print_view(sernomer, id_stud):
+@core.route('/print-ticket/<int:id_stud>/')
+def render_print_view(id_stud):
     a = datetime.datetime.now()
     b = timedelta(hours=2, minutes=55)
     m = timedelta(hours=3, minutes=1)
@@ -687,34 +701,21 @@ def render_print_view(sernomer, id_stud):
     #studentService = StudentService()
 
     #student = studentService.get_student_by_serial_code(serial_code=sernomer)
-    if id_stud == 1:
-        redir="/vvesti"
-    # client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
-    suppose_student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
-    if bool(suppose_student) != 0:
-        id_st = suppose_student[0].person_id
-        student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
-        # domain = "SYSTEM"
-        # nameuser = "parsec"
-        # password = "parsec"
-        # session = (client.service.OpenSession(domain, nameuser, password))
-        # sessionID = session.Value.SessionID
-        # lastname = "Student"
-        # firstname = id_st
-        # buf = (client.service.FindPeople(sessionID, lastname, firstname))
-        # PERSON_ID = buf[0].ID
-        # code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
-        # CODE = code1[0].CODE
-        # decimal = int(CODE, 16)
-        parsec_code = get_parsec_code(id_st)
+    """ if id_stud == 1:
+        redir="/vvesti" """
+    student = data.Student.query.filter(data.Student.date == d1).filter(data.Student.person_id == id_stud).all()
+    student_with_access = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_stud).all()
 
-        if bool(student_with_access) == 0:
-            return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
-        
-        qr_code = generate_qr_code(parsec_code)
-        return render_template('print-ticket/print-ticket.html', student=student_with_access, qr_code=qr_code, redirect_url=redir)
-    else:
-        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='На сегодня для вас нет запланированного экзамена'))
+    if bool(student_with_access) == 0 or bool(student) == 0:
+        return redirect(url_for('core.render_error_page', page_title='Ошибка', error_title='Ошибка', error_message='По указанным данным студент не найден'))
+    
+    qr_enity = data.QrCode.query.first()
+    qr_code = None
+    if qr_enity:
+        qr_code = qr_enity.source
+    mocked_data = [{ "name": "Экстренная медицинская помощьЭкстренная медицинская помощьЭкстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь Экстренная медицинская помощьпомощьпомощь помощь помощь помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Экстренная медицинская помощь", "number": "1.2" }, { "name": "Внутривенная иньекция", "number": "1.4" }]
+    return render_template('print-ticket/print-ticket.html', student=student_with_access, mocked_data=mocked_data,  login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
+    
 
 @core.route('/error-ticket/')
 def render_error_page():

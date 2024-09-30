@@ -12,10 +12,10 @@
     </header>
     <main class="main">
       <section class="student-info">
-        <span class="student-info__id"
-          >Индивидуальный номер: {{ student[0].id_stud }}</span
-        >
-        <span class="student-info__fio">Аккредитуемый: {{ student[0].student }}</span>
+        <p class="student-info__id"
+          >ID: {{ student[0].id_stud }}</p>
+        <span class="student-info__credentials">Логин {{ login }}</span>
+        <span class="student-info__credentials">Пароль {{ password }}</span>
       </section>
       <section class="schedule">
         <table id="schedule" class="center" style="color: white;">
@@ -33,23 +33,26 @@
       {%endfor%}
       </table>
       </section>
+      {% if qr_code %}
       <section class="qr-code">
+        
         <img
           class="qr-code__image"
           src="data:image;base64,{{ qr_code }}"
           alt="qr code"
         />
       </section>
+      {% endif %}
       <section class="controls">
-        <button class="action-button" id="back-to-home">
+        <button class="controls__back-to-home" id="back-to-home">
           На главный экран
         </button>
         <button
-          class="action-button"
+          class="controls__print-ticket"
           id="print-ticket"
           data-redirect-url="{{redirect_to_print_url}}"
         >
-          Распечатать талон
+        Получить маршрутный лист
         </button>
         <progress-bar-element
           class="controls__progress-bar"

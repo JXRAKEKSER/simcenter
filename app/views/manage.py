@@ -17,6 +17,8 @@ from app.helpers import (reject_operator, reject_no_offices, is_operator, is_off
 #from app.forms.manage import OfficeForm, TaskForm, SearchForm, ProcessedTicketForm
 from app.constants import TICKET_WAITING
 
+from app.utils import generate_qr_code
+
 
 manage_app = Blueprint('manage_app', __name__)
 
@@ -911,8 +913,12 @@ def plan():
             createperson(stud1)
         except Exception:
             pass
-        stud_acc = data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).delete()
-        stud_a = data.Stud_access.query.filter_by(date=date).order_by(data.Stud_access.id_stud.desc()).all()
+        all_rooms = request.form.getlist("contact[]") + request.form.getlist("contact2[]") + request.form.getlist("contact3[]")
+        for room in all_rooms:
+            data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).filter(data.Stud_access.room == room).delete()
+        
+        #stud_acc = data.Stud_access.query.filter_by(date=date).filter_by(specialization=special).delete()
+        #stud_a = data.Stud_access.query.filter_by(date=date).order_by(data.Stud_access.id_stud.desc()).all()
         #if bool(stud_acc) != 0:
          #   db.session.delete(stud_acc)
         db.session.commit()
@@ -1095,3 +1101,30 @@ def spec():
             return "Ошибка"
     else:
          return render_template('spec.html')
+    
+
+@manage_app.route('/qr', methods=['GET', 'POST'])
+@login_required
+def render_qr_creating_page():
+
+    if request.method == 'POST':
+        code_to_encoding = request.form['code']
+        qr_code = generate_qr_code(code_to_encoding)
+        
+        existed_qr_code = data.QrCode.query.first()
+        if not existed_qr_code:
+            created_qr = data.QrCode(source=qr_code)
+            db.session.add(created_qr)
+        else:
+            data.QrCode.query.filter_by(id=existed_qr_code.id).update({ 'source': qr_code })
+
+        db.session.commit()
+
+        return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code, existed_qr_code=existed_qr_code)
+    
+    if request.method == 'GET':
+        qr_code = data.QrCode.query.first()
+        if not qr_code:
+            return render_template('/manage/qr-code/crud-qr-code.html', qr_code=None)    
+        return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code.source)
+

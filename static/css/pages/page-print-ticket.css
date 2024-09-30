@@ -3,8 +3,9 @@
 @import url(../blocks/student-info/student-info.css);
 @import url(../blocks/student-info/__id/student-info__id.css);
 @import url(../blocks/student-info/__id/_color/student-info__id_color_black.css);
-@import url(../blocks/student-info/__fio/student-info__fio.css);
-@import url(../blocks/student-info/__fio/_color/student-info__fio_color_black.css);
+@import url(../blocks/student-info/__id/_accent/student-info__id_accent.css);
+@import url(../blocks/student-info/__credentials/student-info__credentials.css);
+@import url(../blocks/student-info/__credentials/_color/student-info__credentials_color_black.css);
 
 .body {
     background-image: none;
@@ -15,12 +16,55 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
-
+    gap: 10px;
+    width: 561px;
+    height: 793px;
     min-height: 100%;
 }
+.ticket-data {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.ticket-data__title {
+    grid-column: 1/2;
+    grid-row: 3;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 5px 0 0 0;
+}
+
+
+
+.ticket-data__schedule {
+    grid-column: 1/2;
+    grid-row: 4;
+}
+
+.access {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+}
+.access__qr-code {
+    grid-column: 2/3;
+    grid-row: 1/4;
+}
 .qr-code__image {
+    width: 100%;
     background-color: white;
-    padding: 10px;
-    border-radius: 10px;
+}
+.access__credentials {
+    grid-column: 1/2;
+    grid-row: 1;
+    font-size: 15px;
+    font-weight: 700;
+    align-self: center;
+}
+.access__credentials:nth-child(2) {
+    grid-row: 2;
+}
+.access__credentials:last-of-type {
+    grid-row: 3;
 }

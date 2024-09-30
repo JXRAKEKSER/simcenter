@@ -2,7 +2,8 @@
 @import url(../blocks/action-button/action-button.css);
 @import url(../blocks/student-info/student-info.css);
 @import url(../blocks/student-info/__id/student-info__id.css);
-@import url(../blocks/student-info/__fio/student-info__fio.css);
+@import url(../blocks/student-info/__id/_accent/student-info__id_accent.css);
+@import url(../blocks/student-info/__credentials/student-info__credentials.css);
 
 .main {
     display: flex;
@@ -18,6 +19,15 @@
     display: grid;
     grid-template-columns: max-content max-content;
     gap: 50px;
+}
+
+.controls__print-ticket,
+.controls__back-to-home {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    grid-column: 1/3;
 }
 .controls__progress-bar {
     grid-column: 1/3;

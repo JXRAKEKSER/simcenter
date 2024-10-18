@@ -184,6 +184,10 @@ def serial_ra():
     flash('Notice: office has been resetted. ..', 'info')
     return redirect(url_for('manage_app.all_offices'))
 
+@core.route('/accreditation-managment')
+def get_page():
+    return render_template("accreditaion-managment/accreditation-managment.html")
+
 @core.route('/hall')
 def hall():
     a = datetime.datetime.now()

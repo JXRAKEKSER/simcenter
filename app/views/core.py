@@ -793,8 +793,8 @@ def printf(sernomer, id):
         PERSON_ID = buf[0].ID
         code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
         CODE = code1[0].CODE
-        # decimal = int(CODE, 16)
-        return render_template('printf.html', test=test2, code=CODE, redir=redir)
+        decimal = int(CODE, 16)
+        return render_template('printf.html', test=test2, code=decimal, redir=redir)
     else:
         return render_template('printf.html', test=1, code=1, redir=redir)
 

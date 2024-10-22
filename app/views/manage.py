@@ -10,7 +10,7 @@ from flask_login import current_user, login_required
 from datetime import datetime, date, time, timedelta
 import csv
 
-from app.views.schedule import access, schedule1, createperson
+from app.views.schedule import createperson
 import app.database as data
 from app.middleware import db
 from app.utils import ids, remove_string_noise

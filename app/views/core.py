@@ -34,9 +34,9 @@ from flask import request
 tts = pyttsx3.init()
 from gtts import gTTS
 global video
-from app.views.schedule import access, schedule1, createperson
+from app.views.schedule import schedule_tasks
 core = Blueprint('core', __name__)
-schedule1()
+schedule_tasks()
 def gen(video):
     while True:
         success, image = video.read()

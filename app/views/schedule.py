@@ -146,5 +146,3 @@ def schedule_tasks():
     while True:
         schedule.run_pending()
         time.sleep(1)  # Ждём 1 секунду перед следующей проверкой
-
-

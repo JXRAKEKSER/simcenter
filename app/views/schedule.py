@@ -83,8 +83,8 @@ def createperson(studs):
         PERSON_ID = buf[0].ID
 
         # Открываем сессию редактирования для добавления идентификатора
-        session = client.service.OpenPersonEditingSession(sessionID, PERSON_ID)
-        personEditSessionID = session.Value
+        session_1 = client.service.OpenPersonEditingSession(sessionID, PERSON_ID)
+        personEditSessionID = session_1.Value
 
         # Получение группы доступа
         NAME = "Этажи"  # Указываем необходимую территорию (группу доступа)
@@ -102,7 +102,7 @@ def createperson(studs):
             <identifier xsi:type="Identifier">
             <CODE>{CODE}</CODE>
             <PERSON_ID>{PERSON_ID}</PERSON_ID>
-            <IS_PRIMARY>1</IS_PRIMARY>
+            <IS_PRIMARY>false</IS_PRIMARY>
             <ACCGROUP_ID>{ACCGROUP_ID}</ACCGROUP_ID>
             </identifier>
             </AddPersonIdentifier>
@@ -115,6 +115,9 @@ def createperson(studs):
             body = body.encode('utf-8')
 
             # Отправляем запрос на сервер для назначения группы доступа
+            session = requests.session()
+            session.headers = {"Content-Type": "text/xml; charset=utf8"}
+            session.headers.update({"Content-Length": str(len(body))})
             response = session.post(url=endpoint, data=body, verify=False)
 
             # Печать результата запроса

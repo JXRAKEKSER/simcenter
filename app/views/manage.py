@@ -2,12 +2,14 @@ from flask import url_for, flash, request, render_template, redirect, Blueprint
 import os
 import pandas as pd
 from io import BytesIO
+from threading import Thread
 
 import zipfile
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from datetime import datetime, date, time, timedelta
 import csv
+
 from app.views.schedule import access, schedule1, createperson
 import app.database as data
 from app.middleware import db
@@ -780,7 +782,6 @@ def delet(id):
     return redirect(url_for('manage_app.speci_a'))
 
 if __name__ == "__main__":
-
     app.run(debug=True)
 
 @manage_app.route('/dlt/<int:id>', methods=['GET', 'POST'])
@@ -885,7 +886,6 @@ def delete(id):
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
 
 

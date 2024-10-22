@@ -5,6 +5,40 @@ from zeep import Client
 import time
 
 
+ip_to_door = {
+    '172.29.3.64:1:1': '2.1',
+    '172.29.3.65:1:1': '2.2',
+    '172.29.3.66:1:1': '2.3',
+    '172.29.3.67:1:1': '2.4',
+    '172.29.3.71:1:1': '2.5',
+    '172.29.3.70:1:1': '2.6',
+    '172.29.3.69:1:1': '2.7',
+    '172.29.3.68:1:1': '2.8',
+
+    '172.29.3.73:1:1': '3.1',
+    '172.29.3.72:1:1': '3.2',
+    '172.29.3.75:1:1': '3.4',
+    '172.29.3.79:1:1': '3.5',
+    '172.29.3.78:1:1': '3.6',
+    '172.29.3.77:1:1': '3.7',
+    '172.29.3.76:1:1': '3.8',
+
+    '172.29.3.51:1:1': '1.1',
+    '172.29.3.52:1:1': '1.2',
+    '172.29.3.53:1:1': '1.3',
+    '172.29.3.54:1:1': '1.4',
+    '172.29.3.55:1:1': '1.5',
+    '172.29.3.56:1:1': '1.6',
+    '172.29.3.58:1:1': '1.7',
+    '172.29.3.59:1:1': '1.8',
+    '172.29.3.60:1:1': '1.9',
+    '172.29.3.62:1:1': '1.11',
+    '172.29.3.63:1:1': '1.12',
+    '172.29.3.57:1:1': '1.14',
+    '172.29.3.50:1:1': '1.15'
+}
+
+
 def get_code(person_id):
     client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
     domain = "SYSTEM"
@@ -83,7 +117,6 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
         '2C5EE108-28E3-4DCC-8C95-7F3222D8E67F',  # Дата/время события
         '57CA38E4-ED6F-4D12-ADCB-2FAA16F950D7',  # Тип события (код в 10-ной системе)
         '633904B5-971B-4751-96A0-92DC03D5F616',  # Источник события (наименование территории или оператора)
-        '7C6D82A0-C8C8-495B-9728-357807193D23',  # id user
         '9F7A30E6-C9ED-4E62-83E3-59032A0F8D27 '  # id event
     ]
 
@@ -125,8 +158,6 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
                 if idx == 2:
                     key = 'Источник события (наименование территории или оператора)'
                 if idx == 3:
-                    key = 'Идентификатор субъекта (PERS_ID - Guid)'
-                if idx == 4:
                     key = 'Идентификатор события (Guid)'
                 if idy not in result:
                     result[idy] = {}
@@ -135,23 +166,27 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
         for k in result:
             event_code = result[k]['Тип события (код в 10-ной системе)']['anyType'][0]
             datew = result[k]['Дата/время события']['anyType'][0]
-            st_id = result[k]['Идентификатор субъекта (PERS_ID - Guid)']['anyType'][0]
             door = result[k]['Источник события (наименование территории или оператора)']['anyType'][0]
             ev_id = result[k]['Идентификатор события (Guid)']['anyType'][0]
             type_ev = 'тип события'
-            if event_code == '590144':
-                print(f"Студент {st_id} вошел в дверь ({door}) по ключу {datew}")
-                type_ev = 'entry'
-            if event_code == '590145':
-                print(f"Студент {st_id} вышел {datew}")
-                type_ev = 'exit'
             if ev_id not in door_events:
+                if event_code == '590144':
+                    print(f"Студент {personal_id} вошел в дверь ({door}) по ключу {datew}")
+                    type_ev = 'entry'
+                if event_code == '590145':
+                    print(f"Студент {personal_id} вышел {datew}")
+                    type_ev = 'exit'
                 is_new = True
+                dr_name = ''
+                for key in ip_to_door:
+                    if key in door:
+                        dr_name = ip_to_door[key]
                 door_events[ev_id] = {
                     'event_id': ev_id,
                     'personal_id': personal_id,
                     'datetime': datew,
-                    'event_type': type_ev
+                    'event_type': type_ev,
+                    'door': dr_name
                 }
     return is_new
 
@@ -163,3 +198,6 @@ def delete_events():
 def get_door_events():
     global door_events
     return door_events
+
+
+

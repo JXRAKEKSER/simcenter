@@ -1,3 +1,4 @@
+from events import UPDATE_EVENT
 from host_data import SOAP_HOST
 from datetime import datetime
 from zeep import Client
@@ -37,7 +38,7 @@ def open_session(domain, username, password):
     return sessionID
 
 
-door_events = []
+door_events = {}
 
 def get_events():
     session_id = open_session(domain, username, password)
@@ -47,7 +48,7 @@ def get_events():
     # Определение начала и конца текущего дня
     dt_from = datetime.combine(datetime.today(), datetime.min.time())  # Начало текущих суток
     dt_to = datetime.combine(datetime.today(), datetime.max.time())  # Конец текущих суток
-
+    new = False
     studs = (client.service.FindPeople(session_id, "Student"))
     for stud in studs:
         for tr in [590144, 590145]:
@@ -68,14 +69,15 @@ def get_events():
             events = client.service.OpenEventHistorySession(**params)
             event_history_session_id = events['Value']
 
-            get_event_history_details(session_id, event_history_session_id, dt_from, dt_to)
+            new = get_event_history_details(session_id, event_history_session_id, stud['FIRST_NAME'])
+    if new:
+        UPDATE_EVENT.set()
 
 
-
-def get_event_history_details(session_id, event_history_session_id, dt_from=None, dt_to=None):
+def get_event_history_details(session_id, event_history_session_id, personal_id):
     client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
     global door_events
-
+    is_new = False
     # Поля для запроса (из документации)
     fields = [
         '2C5EE108-28E3-4DCC-8C95-7F3222D8E67F',  # Дата/время события
@@ -136,10 +138,28 @@ def get_event_history_details(session_id, event_history_session_id, dt_from=None
             st_id = result[k]['Идентификатор субъекта (PERS_ID - Guid)']['anyType'][0]
             door = result[k]['Источник события (наименование территории или оператора)']['anyType'][0]
             ev_id = result[k]['Идентификатор события (Guid)']['anyType'][0]
-
+            type_ev = 'тип события'
             if event_code == '590144':
                 print(f"Студент {st_id} вошел в дверь ({door}) по ключу {datew}")
+                type_ev = 'entry'
             if event_code == '590145':
                 print(f"Студент {st_id} вышел {datew}")
+                type_ev = 'exit'
             if ev_id not in door_events:
-                door_events.append(ev_id)
+                is_new = True
+                door_events[ev_id] = {
+                    'event_id': ev_id,
+                    'personal_id': personal_id,
+                    'datetime': datew,
+                    'event_type': type_ev
+                }
+    return is_new
+
+def delete_events():
+    global door_events
+    door_events = {}
+
+
+def get_door_events():
+    global door_events
+    return door_events

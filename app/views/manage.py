@@ -1,4 +1,4 @@
-from flask import url_for, flash, request, render_template, redirect, Blueprint
+from flask import url_for, flash, request, render_template, redirect, Blueprint, jsonify
 import os
 import pandas as pd
 from io import BytesIO
@@ -10,6 +10,7 @@ from flask_login import current_user, login_required
 from datetime import datetime, date, time, timedelta
 import csv
 
+from app.services.parsec.parsec_service import door_events
 from app.views.schedule import createperson
 import app.database as data
 from app.middleware import db
@@ -20,7 +21,7 @@ from app.helpers import (reject_operator, reject_no_offices, is_operator, is_off
 from app.constants import TICKET_WAITING
 
 from app.utils import generate_qr_code
-
+from events import UPDATE_EVENT
 
 manage_app = Blueprint('manage_app', __name__)
 
@@ -1143,3 +1144,29 @@ def render_qr_creating_page():
             return render_template('/manage/qr-code/crud-qr-code.html', qr_code=None)    
         return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code.source)
 
+
+# Асинхронная функция, которая будет ожидать события
+async def wait_for_new_events():
+    await UPDATE_EVENT.wait()  # Ждем события
+    UPDATE_EVENT.clear()  # Сбрасываем событие после получения
+    return True
+
+
+@manage_app.route('/eventstest')
+def index():
+    return render_template('eventstest.html')
+
+@manage_app.route('/get_new_events')
+async def get_new_events():
+    global door_events
+
+    # Ожидаем появления новых событий с использованием asyncio
+    await wait_for_new_events()
+
+    # Возвращаем новые события в формате JSON
+    new_events = door_events.copy()
+
+    # Очищаем словарь door_events после того, как передали события
+    door_events.clear()
+
+    return jsonify(new_events)

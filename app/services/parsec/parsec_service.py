@@ -71,7 +71,7 @@ def open_session(domain, username, password):
     print(person_id)
     return sessionID
 
-
+events_ids = []
 door_events = {}
 
 def get_events():
@@ -110,7 +110,7 @@ def get_events():
 
 def get_event_history_details(session_id, event_history_session_id, personal_id):
     client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
-    global door_events
+    global door_events, events_ids
     is_new = False
     # Поля для запроса (из документации)
     fields = [
@@ -169,7 +169,7 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
             door = result[k]['Источник события (наименование территории или оператора)']['anyType'][0]
             ev_id = result[k]['Идентификатор события (Guid)']['anyType'][0]
             type_ev = 'тип события'
-            if ev_id not in door_events:
+            if ev_id not in events_ids:
                 if event_code == '590144':
                     print(f"Студент {personal_id} вошел в дверь ({door}) по ключу {datew}")
                     type_ev = 'entry'
@@ -188,16 +188,13 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
                     'event_type': type_ev,
                     'door': dr_name
                 }
+                events_ids.append(ev_id)
     return is_new
 
 def delete_events():
     global door_events
     door_events = {}
 
-
-def get_door_events():
-    global door_events
-    return door_events
 
 
 

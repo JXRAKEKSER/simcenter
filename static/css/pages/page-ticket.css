@@ -1,4 +1,7 @@
+@import url(../../fonts/Montserrat/css/monserrat.css);
 @import url(../blocks/body/body.css);
+@import url(../blocks/the-header/the-header.css);
+@import url(../blocks/the-header/__logo/the-header__logo.css);
 @import url(../blocks/action-button/action-button.css);
 @import url(../blocks/student-info/student-info.css);
 @import url(../blocks/student-info/__id/student-info__id.css);

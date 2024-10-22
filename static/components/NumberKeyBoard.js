@@ -47,11 +47,6 @@ class NumberKeyboard extends HTMLElement {
     if (!this.rendered) {
       this.render();
       this.rendered = true;
-      /* setTimeout(() => {
-        this.emit(ProgressBar.EMITS.MOUNTED, {
-          detail: "progress bar mount event",
-        });
-      }, 0); */
     }
   }
 }

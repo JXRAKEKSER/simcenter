@@ -3,12 +3,9 @@ import ProgressBar from "../../components/ProgressBar.js";
 function redirectToHome() {
   location.href = "/touch";
 }
-
-const backButton = document.querySelector("#back-button");
 const backToHome = document.querySelector("#back-to-home");
 const printTicketBtn = document.querySelector("#print-ticket");
 
-backButton.addEventListener("click", redirectToHome);
 backToHome.addEventListener("click", redirectToHome);
 printTicketBtn.addEventListener("click", () => {
   location.href = printTicketBtn.dataset.redirectUrl;

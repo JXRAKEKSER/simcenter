@@ -1,0 +1,34 @@
+@import url(../vendors/nullstyle.css);
+@import url(../pages/root.css);
+.body {
+    background: linear-gradient(180deg, #1B5A52 -13.94%, #288E81 101.3%);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100%;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 38px 68px;
+}
+
+.timer {
+    font-size: 30px;
+    line-height: 36.57px;
+    font-weight: 600;
+    color: white;
+    width: fit-content;
+    align-self: flex-end;
+}
+.main__timer {
+    margin: 0 0 16px 0;
+}
+
+.schedule {
+    padding: 70px 40px;
+    background-color: white;
+    border-radius: 20px;
+}

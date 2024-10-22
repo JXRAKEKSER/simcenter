@@ -35,6 +35,7 @@ button {
   text-align: center;
   color: #f1f1f1;
   font-size: 46px;
+  font-weight: 600;
   width: 100%;
   max-width: 800px;
   margin: 0 0 10px 0;
@@ -44,18 +45,27 @@ button {
 .controls {
   display: grid;
   grid-template-columns: repeat(2, max-content);
-  gap: 20px;
+  gap: 30px;
 }
 .controls__input {
   padding: 10px 15px;
   grid-column: 1/3;
   font-size: 46px;
+  color: var(--primary-green);
+  border-radius: 5px;
+  border-color: transparent;
 }
-.controls__redirect {
-  font-size: 36px;
-  color: white;
-  grid-column: 1/3;
+
+.controls__input::placeholder {
+  color: var(--primary-green);
+}
+
+.controls__button {
+  font-size: 40px;
+  line-height: 48.76px;
+  color: var(--primary-green);
   justify-self: center;
+  padding: 27px 40px;
 }
 
 .error {
@@ -132,7 +142,7 @@ button:focus, button:disabled {
 body {
   font-family: Arial, sans-serif;
   font-size: 20px;
-  padding: 0 20px;
+  padding: 0;
 }
 
 main {

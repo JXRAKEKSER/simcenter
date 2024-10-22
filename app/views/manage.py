@@ -923,9 +923,9 @@ def plan():
         date = request.form.get('date')  # Дата
         special = request.form.get('special')  # специальность
         stud = data.Student.query.filter_by(date=date).filter_by(specialization_id=special).all()
-        stud1 = data.Student.query.filter_by(date=date).count()
+        # stud1 = data.Student.query.filter_by(date=date).count()
         try:
-            createperson(stud1)
+            createperson(stud)
         except Exception:
             pass
         all_rooms = request.form.getlist("contact[]") + request.form.getlist("contact2[]") + request.form.getlist("contact3[]")

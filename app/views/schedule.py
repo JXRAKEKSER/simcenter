@@ -54,32 +54,24 @@ def get_numbers(number1, number2):
                 #unique.append(number)
     return unique
 
-def createperson(count):
-    session = (client.service.OpenSession(domain, nameuser, password))
+def createperson(studs):
+    session = client.service.OpenSession(domain, nameuser, password)
     sessionID = session.Value.SessionID
     lastname = "Student"
-    pers1 = (client.service.FindPeople(sessionID, lastname))
-    max = data.Student.query.count()
-    i = len(pers1)+1
 
-    while(i<count):
-        go = str(i)
+    for student in studs:  # Проходим по каждому студенту в списке
         A = 1000
         B = 9999
-        while len(str(go)) < 4:
-            go = "0" + go
-        CODE = str(random.randint(A, B)) + go
-        ID = "00000000-0000-0000-0000-000000000000"
+        CODE = str(random.randint(A, B)) + str(student.id)  # Генерация кода с использованием ID студента
+        ID = "00000000-0000-0000-0000-000000000000"  # ID для нового студента
         LAST_NAME = "Student"
-        FIRST_NAME = i
+        FIRST_NAME = student.person_id  # Используем поле person_id как FIRST_NAME
         MIDDLE_NAME = ""
         TAB_NUM = ""
-
-        NAME = "none"  # name территории
-        ter = (client.service.GetAccessGroups(sessionID))  # список всех территорий
-        matches = [el for el in ter if el.NAME == NAME]  # поиск территории по имени
-        ORG_ID = '766eb2b5-d5ef-4a12-a7ad-a55b073a0337'
+        ORG_ID = '766eb2b5-d5ef-4a12-a7ad-a55b073a0337'  # Организация
         endpoint = f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl"
+
+        # SOAP-запрос для создания студента
         login_template = """
         <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
           <soap:Body>
@@ -98,26 +90,27 @@ def createperson(count):
         </soap:Envelope>
         """
 
+        # Формируем тело SOAP-запроса
         body = login_template.format(sessionID=sessionID, ID=ID, LAST_NAME=LAST_NAME, FIRST_NAME=FIRST_NAME,
                                      MIDDLE_NAME=MIDDLE_NAME, TAB_NUM=TAB_NUM, ORG_ID=ORG_ID)
         body = body.encode('utf-8')
 
+        # Отправляем запрос на сервер
         session = requests.session()
         session.headers = {"Content-Type": "text/xml; charset=utf8"}
         session.headers.update({"Content-Length": str(len(body))})
         response = session.post(url=endpoint, data=body, verify=False)
 
-
-        lastname = "Student"
-        firstname = i
-        buf = (client.service.FindPeople(sessionID, lastname, firstname))
+        # Получаем созданного человека
+        buf = client.service.FindPeople(sessionID, lastname, FIRST_NAME)
         PERSON_ID = buf[0].ID
-        session = (client.service.OpenPersonEditingSession(sessionID, PERSON_ID))
-        personEditSessionID = (session.Value)
-        endpoint = f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl"
-        IS_PRIMARY = 1
-        ACCGROUP_ID = ""
-        login_template = """
+
+        # Открываем сессию редактирования для добавления идентификатора
+        session = client.service.OpenPersonEditingSession(sessionID, PERSON_ID)
+        personEditSessionID = session.Value
+
+        # SOAP-запрос для добавления идентификатора студенту
+        identifier_template = """
         <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
         <soap:Body>
         <AddPersonIdentifier xmlns="http://parsec.ru/Parsec3IntergationService">
@@ -125,29 +118,29 @@ def createperson(count):
         <identifier xsi:type="Identifier">
         <CODE>{CODE}</CODE>
         <PERSON_ID>{PERSON_ID}</PERSON_ID>
-        <IS_PRIMARY>{IS_PRIMARY}</IS_PRIMARY>
+        <IS_PRIMARY>1</IS_PRIMARY>
         </identifier>
         </AddPersonIdentifier>
         </soap:Body>
         </soap:Envelope>
         """
-        body = login_template.format(personEditSessionID=personEditSessionID, CODE=CODE, PERSON_ID=PERSON_ID,
-                                     IS_PRIMARY=IS_PRIMARY, ACCGROUP_ID=ACCGROUP_ID)
+
+        # Формируем тело SOAP-запроса для добавления идентификатора
+        body = identifier_template.format(personEditSessionID=personEditSessionID, CODE=CODE, PERSON_ID=PERSON_ID)
         body = body.encode('utf-8')
-        session = requests.session()
-        session.headers = {"Content-Type": "text/xml; charset=utf8"}
-        session.headers.update({"Content-Length": str(len(body))})
+
+        # Отправляем запрос на сервер
         response = session.post(url=endpoint, data=body, verify=False)
 
-
+        # Печать результата запроса
         print("**********************")
         print(response.content.decode("utf-8"))
         print("**********************")
         print(response.status_code)
         print("**********************")
-        print(count)
+        print(f"Created person with login: {FIRST_NAME}")
 
-        i+=1
+
 def access1():
     a = datetime.now()
     d = timedelta(hours=3)

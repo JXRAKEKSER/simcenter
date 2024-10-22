@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from datetime import datetime, date, time, timedelta
 import csv
-
+import time as timef
 from app.services.parsec.parsec_service import door_events
 from app.views.schedule import createperson
 import app.database as data
@@ -1145,10 +1145,15 @@ def render_qr_creating_page():
         return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code.source)
 
 
-# Асинхронная функция, которая будет ожидать события
-async def wait_for_new_events():
-    await UPDATE_EVENT.wait()  # Ждем события
-    UPDATE_EVENT.clear()  # Сбрасываем событие после получения
+def wait_for_new_events():
+    global UPDATE_EVENT
+    if UPDATE_EVENT is None:
+        return False
+    # Ожидание события обновления (синхронно)
+    while not UPDATE_EVENT.is_set():
+        timef.sleep(1)  # Пауза между проверками
+
+    UPDATE_EVENT.clear()  # Сброс события
     return True
 
 
@@ -1160,13 +1165,10 @@ def index():
 async def get_new_events():
     global door_events
 
-    # Ожидаем появления новых событий с использованием asyncio
-    await wait_for_new_events()
-
-    # Возвращаем новые события в формате JSON
-    new_events = door_events.copy()
-
-    # Очищаем словарь door_events после того, как передали события
-    door_events.clear()
-
-    return jsonify(new_events)
+    # Синхронно ждем появления новых событий
+    if wait_for_new_events():
+        new_events = door_events.copy()
+        door_events.clear()  # Очищаем события после отправки клиенту
+        return jsonify(new_events)
+    else:
+        return jsonify([])

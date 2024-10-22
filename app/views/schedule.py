@@ -98,7 +98,7 @@ def createperson(studs):
         personEditSessionID = session_1.Value
 
         # Получение группы доступа
-        NAME = "Этажи"  # Указываем необходимую территорию (группу доступа)
+        NAME = "Доступ всегда и везде"  # Указываем необходимую территорию (группу доступа)
         ter = client.service.GetAccessGroups(sessionID)
         matches = [el for el in ter if el.NAME == NAME]
         if matches:

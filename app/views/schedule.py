@@ -11,6 +11,7 @@ import csv
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, Flask, Response
 import app.database as data
 from app.middleware import db
+from app.services.parsec.parsec_service import get_events
 from app.utils import ids, remove_string_noise
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
                          is_common_task_operator, reject_setting, get_or_reject, decode_links)
@@ -155,3 +156,6 @@ def delete_students():
 def schedule_tasks():
     # Запланировать удаление студентов каждый день в 23:55
     schedule.every().day.at("23:55").do(delete_students)
+
+    schedule.every(5).minutes.do(get_events)
+

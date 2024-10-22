@@ -1162,7 +1162,7 @@ def index():
     return render_template('eventstest.html')
 
 @manage_app.route('/get_new_events')
-async def get_new_events():
+def get_new_events():
     global door_events
 
     # Синхронно ждем появления новых событий

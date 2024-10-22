@@ -166,17 +166,21 @@ def get_event_history_details(session_id, event_history_session_id, personal_id)
             ev_id = result[k]['Идентификатор события (Guid)']['anyType'][0]
             type_ev = 'тип события'
             if ev_id not in events_ids:
-                if event_code == '590144':
-                    print(f"Студент {personal_id} вошел в дверь ({door}) по ключу {datew}")
-                    type_ev = 'entry'
-                if event_code == '590145':
-                    print(f"Студент {personal_id} вышел {datew}")
-                    type_ev = 'exit'
                 is_new = True
                 dr_name = ''
                 for key in ip_to_door:
                     if key in door:
                         dr_name = ip_to_door[key]
+                if event_code == '590144':
+                    print(f"Студент {personal_id} вошел в дверь ({dr_name}) по ключу {datew}")
+                    type_ev = 'entry'
+                    if dr_name == '2.1':
+                        type_ev = 'exit'
+                if event_code == '590145':
+                    print(f"Студент {personal_id} вышел из {dr_name} {datew}")
+                    type_ev = 'exit'
+                    if dr_name == '2.1':
+                        type_ev = 'entry'
                 door_events[ev_id] = {
                     'event_id': ev_id,
                     'personal_id': personal_id,

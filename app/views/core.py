@@ -34,9 +34,9 @@ from flask import request
 tts = pyttsx3.init()
 from gtts import gTTS
 global video
-from app.views.schedule import access, schedule1, createperson
+from app.views.schedule import schedule_tasks
 core = Blueprint('core', __name__)
-schedule1()
+schedule_tasks()
 def gen(video):
     while True:
         success, image = video.read()
@@ -783,24 +783,24 @@ def printf(sernomer, id):
     redir="touch/ru"
     if id == 1:
         redir="vvesti"
-    # client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
+    client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")
     test1 = data.Student.query.filter(data.Student.date == d1).filter(data.Student.ser_nomer == sernomer).all()
     if bool(test1) != 0:
         id_st = test1[0].person_id
         test2 = data.Stud_access.query.filter(data.Stud_access.date == d1).filter(data.Stud_access.id_stud == id_st).all()
-        # domain = "SYSTEM"
-        # nameuser = "parsec"
-        # password = "parsec"
-        # session = (client.service.OpenSession(domain, nameuser, password))
-        # sessionID = session.Value.SessionID
-        # lastname = "Student"
-        # firstname = id_st
-        # buf = (client.service.FindPeople(sessionID, lastname, firstname))
-        # PERSON_ID = buf[0].ID
-        # code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
-        # CODE = code1[0].CODE
-        # decimal = int(CODE, 16)
-        return render_template('printf.html', test=test2, code=1234, redir=redir)
+        domain = "SYSTEM"
+        nameuser = "parsec"
+        password = "parsec"
+        session = (client.service.OpenSession(domain, nameuser, password))
+        sessionID = session.Value.SessionID
+        lastname = "Student"
+        firstname = id_st
+        buf = (client.service.FindPeople(sessionID, lastname, firstname))
+        PERSON_ID = buf[0].ID
+        code1 = (client.service.GetPersonIdentifiers(sessionID, PERSON_ID))
+        CODE = code1[0].CODE
+        decimal = int(CODE, 16)
+        return render_template('printf.html', test=test2, code=decimal, redir=redir)
     else:
         return render_template('printf.html', test=1, code=1, redir=redir)
 

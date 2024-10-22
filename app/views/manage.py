@@ -2,13 +2,15 @@ from flask import url_for, flash, request, render_template, redirect, Blueprint
 import os
 import pandas as pd
 from io import BytesIO
+from threading import Thread
 
 import zipfile
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from datetime import datetime, date, time, timedelta
 import csv
-from app.views.schedule import access, schedule1, createperson
+
+from app.views.schedule import createperson
 import app.database as data
 from app.middleware import db
 from app.utils import ids, remove_string_noise
@@ -780,7 +782,6 @@ def delet(id):
     return redirect(url_for('manage_app.speci_a'))
 
 if __name__ == "__main__":
-
     app.run(debug=True)
 
 @manage_app.route('/dlt/<int:id>', methods=['GET', 'POST'])
@@ -885,7 +886,6 @@ def delete(id):
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
 
 
@@ -923,9 +923,9 @@ def plan():
         date = request.form.get('date')  # Дата
         special = request.form.get('special')  # специальность
         stud = data.Student.query.filter_by(date=date).filter_by(specialization_id=special).all()
-        stud1 = data.Student.query.filter_by(date=date).count()
+        # stud1 = data.Student.query.filter_by(date=date).count()
         try:
-            createperson(stud1)
+            createperson(stud)
         except Exception:
             pass
         all_rooms = request.form.getlist("contact[]") + request.form.getlist("contact2[]") + request.form.getlist("contact3[]")

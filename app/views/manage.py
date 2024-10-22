@@ -1145,30 +1145,30 @@ def render_qr_creating_page():
         return render_template('/manage/qr-code/crud-qr-code.html', qr_code=qr_code.source)
 
 
-def wait_for_new_events():
-    global UPDATE_EVENT
-    if UPDATE_EVENT is None:
-        return False
-    # Ожидание события обновления (синхронно)
-    while not UPDATE_EVENT.is_set():
-        timef.sleep(1)  # Пауза между проверками
-
-    UPDATE_EVENT.clear()  # Сброс события
-    return True
-
-
-@manage_app.route('/eventstest')
-def index():
-    return render_template('eventstest.html')
-
-@manage_app.route('/get_new_events')
-def get_new_events():
-    global door_events
-
-    # Синхронно ждем появления новых событий
-    if wait_for_new_events():
-        new_events = door_events.copy()
-        door_events.clear()  # Очищаем события после отправки клиенту
-        return jsonify(new_events)
-    else:
-        return jsonify([])
+# def wait_for_new_events():
+#     global UPDATE_EVENT
+#     if UPDATE_EVENT is None:
+#         return False
+#     # Ожидание события обновления (синхронно)
+#     while not UPDATE_EVENT.is_set():
+#         timef.sleep(1)  # Пауза между проверками
+#
+#     UPDATE_EVENT.clear()  # Сброс события
+#     return True
+#
+#
+# @manage_app.route('/eventstest')
+# def index():
+#     return render_template('eventstest.html')
+#
+# @manage_app.route('/get_new_events')
+# def get_new_events():
+#     global door_events
+#
+#     # Синхронно ждем появления новых событий
+#     if wait_for_new_events():
+#         new_events = door_events.copy()
+#         door_events.clear()  # Очищаем события после отправки клиенту
+#         return jsonify(new_events)
+#     else:
+#         return jsonify([])

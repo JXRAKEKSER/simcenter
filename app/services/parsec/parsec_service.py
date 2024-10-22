@@ -70,6 +70,7 @@ events_ids = []
 door_events = {}
 
 def get_events():
+    print('get_events')
     session_id = open_session(domain, username, password)
 
     client = Client(wsdl=f"http://{SOAP_HOST}/IntegrationService/IntegrationService.asmx?wsdl")

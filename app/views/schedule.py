@@ -141,7 +141,3 @@ def delete_students():
 def schedule_tasks():
     # Запланировать удаление студентов каждый день в 23:55
     schedule.every().day.at("23:55").do(delete_students)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)  # Ждём 1 секунду перед следующей проверкой

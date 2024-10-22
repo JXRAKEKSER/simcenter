@@ -35,11 +35,22 @@ def createperson(studs):
     session = client.service.OpenSession(domain, nameuser, password)
     sessionID = session.Value.SessionID
     lastname = "Student"
+    # Создаём набор для хранения всех сгенерированных кодов
+    generated_codes = set()
 
     for student in studs:  # Проходим по каждому студенту в списке
-        A = 1000
-        B = 9999
-        CODE = str(random.randint(A, B)) + str(student.id)  # Генерация кода с использованием ID студента
+
+        # Генерация уникального 8-символьного кода
+        while True:
+            A = 10000000  # Минимальное значение: 8 символов
+            B = 99999999  # Максимальное значение: 8 символов
+            CODE = str(random.randint(A, B))  # Генерация 8-символьного кода
+
+            # Проверяем, что код уникален
+            if CODE not in generated_codes:
+                generated_codes.add(CODE)  # Добавляем код в набор
+                break  # Если код уникален, выходим из цикла
+
         ID = "00000000-0000-0000-0000-000000000000"  # ID для нового студента
         LAST_NAME = "Student"
         FIRST_NAME = student.person_id  # Используем поле person_id как FIRST_NAME

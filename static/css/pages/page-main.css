@@ -1,0 +1,41 @@
+@import url(../vendors/nullstyle.css);
+@import url(./root.css);
+
+.body {
+    background-image: url(/static/images/background/small.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    font-family: Montserrat, sans-serif;
+}
+
+.welcome {
+    position: fixed;
+    top: 460px;
+    right: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+}
+
+.welcome__title {
+    font-size: 65px;
+    font-weight: 600;
+    line-height: 79.24px;
+    text-align: center;
+    color: var(--primary-green);
+    max-width: 807px;
+}
+
+.welcome__start-button {
+    font-size: 50px;
+    font-weight: 500;
+    line-height: 60.95px;
+    color: white;
+    background-color: var(--primary-green);
+    border-color: transparent;
+    border-radius: 50px;
+    padding: 9px 170px;
+}

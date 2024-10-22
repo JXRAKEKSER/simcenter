@@ -184,9 +184,14 @@ def serial_ra():
     flash('Notice: office has been resetted. ..', 'info')
     return redirect(url_for('manage_app.all_offices'))
 
-@core.route('/accreditation-managment')
-def get_page():
+@core.route('/accreditation-managment/<string:room_number>/')
+def get_page(room_number):
     return render_template("accreditaion-managment/accreditation-managment.html")
+
+@core.route('/accreditation-voise/<string:room_number>/')
+def get_voise_page(room_number):
+    return render_template("accreditaion-managment/voise-accreditation.html")
+
 
 @core.route('/hall')
 def hall():
@@ -239,6 +244,7 @@ def floor(number):
     print("schefule-", schedule)
     print("stud-", stud)
     print("tablo-", tablo)
+    return render_template('floor-monitor/floor-monitor.html')
     return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp() )
 
 @core.route('/camcap')
@@ -498,8 +504,8 @@ def touch():
   #  if office:
  #       tasks = tasks.filter(data.Task.offices.contains(office))
 
-
-    return render_template('touch.html')
+    """ return render_template('touch.html') """
+    return render_template('main-page/main-page.html')
 
 
 @core.route('/planning')
@@ -515,7 +521,7 @@ def render_current_students(room_id):
     current_time = current_date_with_offset.strftime('%H:%M')
     
     student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= current_time).filter(data.Stud_access.time_end >= current_time).all()
-
+    return render_template('room-monitor/room-monitor.html')
     if bool(student_in_room_list) == 0:
         return render_template('tablo2.html', student_in_room=None, time=current_local_date.timestamp())
     return render_template('tablo2.html', student_in_room=student_in_room_list[0], time=current_local_date.timestamp())

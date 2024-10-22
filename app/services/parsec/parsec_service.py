@@ -63,12 +63,7 @@ def open_session(domain, username, password):
     client = Client(wsdl=f"http://172.29.3.2:10101/IntegrationService/IntegrationService.asmx?wsdl")
     session = (client.service.OpenSession(domain, username, password))
     sessionID = session.Value.SessionID
-    lastname = "Student"
-    firstname = 60
-    buf = (client.service.FindPeople(sessionID, lastname, firstname))
-    global person_id
-    person_id = buf[0].ID
-    print(person_id)
+
     return sessionID
 
 events_ids = []

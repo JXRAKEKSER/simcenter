@@ -1,4 +1,4 @@
-from flask import url_for, flash, request, render_template, redirect, Blueprint
+from flask import url_for, flash, request, render_template, redirect, Blueprint, jsonify
 import os
 import pandas as pd
 from io import BytesIO
@@ -20,6 +20,7 @@ from app.helpers import (reject_operator, reject_no_offices, is_operator, is_off
 from app.constants import TICKET_WAITING
 
 from app.utils import generate_qr_code
+from app.services.queue.queue_service import queueService
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -1001,7 +1002,7 @@ def plan():
                 else:
                     kl = str(fx)
                 if i % m == m - 1:
-
+                    """ queueService.add_to_queue({ "id_stud": test[i-1].person_id, "room_number": room_1[n], "specialization": special, "name": test[i-1].name }) """
                     add_stud = data.Stud_access(
                                                 id_stud=test[i-1].person_id,
                                                 room=room_1[n],
@@ -1013,6 +1014,7 @@ def plan():
                                                 flow=1,
                                                 )
                 elif i % m == m - 2:
+                    """ queueService.add_to_queue({ "id_stud": test[i-1].person_id, "room_number": room_2[n], "specialization": special, "name": test[i-1].name }) """
                     add_stud = data.Stud_access(
                                                 id_stud=test[i-1].person_id,
                                                 room=room_2[n],
@@ -1025,6 +1027,7 @@ def plan():
                                                 )
 
                 elif i % m == m - 3:
+                    """ queueService.add_to_queue({ "id_stud": test[i-1].person_id, "room_number": room_3[n], "specialization": special, "name": test[i-1].name }) """
                     add_stud = data.Stud_access(
                                                 id_stud=test[i-1].person_id,
                                                 room=room_3[n],
@@ -1069,6 +1072,9 @@ def plan():
             rx = cx
             fx = mx
             i += 1
+        """ print(queueService.queue)
+        return jsonify({ "data": queueService.queue }) """
+
         return render_template('planning.html', specialization=specialization, rooms=rooms)
 
     else:

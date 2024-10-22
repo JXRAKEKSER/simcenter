@@ -1,5 +1,6 @@
 @import url(../vendors/nullstyle.css);
 @import url(../pages/root.css);
+@import url(../../fonts//Montserrat/css/monserrat.css);
 .body {
     background: linear-gradient(180deg, #1B5A52 -13.94%, #288E81 101.3%);
     display: flex;
@@ -31,4 +32,43 @@
     padding: 70px 40px;
     background-color: white;
     border-radius: 20px;
+    flex: 1;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.table__head {
+    display: grid;
+    gap: 0 13px;
+    grid-template-columns: minmax(150px, 316px) minmax(150px, 547px) minmax(150px, 316px) minmax(150px, 231px) minmax(150px, 231px);
+    background-color: var(--primary-green);
+    justify-items: center;
+    align-items: center;
+    border-radius: 5px;
+    min-height: 85px;
+}
+.table__head-label {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 48.76px;
+    color: white;
+}
+
+.table__row {
+    display: grid;
+    gap: 0 13px;
+    grid-template-columns: minmax(150px, 316px) minmax(150px, 547px) minmax(150px, 316px) minmax(150px, 231px) minmax(150px, 231px);
+    justify-items: center;
+    align-items: center;
+}
+.table__row-label {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 48.76px;
+    text-align: center;
+    color: var(--primary-green);
 }

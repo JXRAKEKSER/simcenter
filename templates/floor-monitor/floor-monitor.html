@@ -3,21 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="5.5">
     <link rel="stylesheet" href="/static/css/pages/page-floor-monitor.css" />
     <title>Монитор</title>
   </head>
   <body class="body">
     <main class="main">
-        <div class="timer main__timer">
-            21 октября 15:28
-        </div>
+        <timer-element class="timer main__timer" time-stamp="{{time}}" color="white"></timer-element>
+      <!-- <div id="timer"  data-time="{{time}}">21 октября 15:28</div> -->
       <section class="schedule">
-        <table class="schedule__table">
-            <thead>
-                <th></th>
-            </thead>
-        </table>
+        <article class="table">
+          <div class="table__head">
+            <span class="table__head-label">Номер</span>
+            <span class="table__head-label">Аккредитуемый</span>
+            <span class="table__head-label">Кабинет</span>
+            <span class="table__head-label">Этаж</span>
+            <span class="table__head-label">Время</span>
+          </div>
+          {% if test4|length > 0 %} {% for el in test4[:15] %}
+          <div class="table__row">
+            <span class="table__row-label">{{ el.id_stud }}</span>
+            <span class="table__row-label">{{ el.student }}</span>
+            <span class="table__row-label">{{ el.room }}</span>
+            <span class="table__row-label">{{ el.room[0] }}</span>
+            <span class="table__row-label">{{ el.time_begin }}</span>
+          </div>
+          {% endfor %} {% endif %}
+        </article>
       </section>
     </main>
   </body>
+  <script type="module" src="/static/scripts/useTimer.js"></script>
 </html>

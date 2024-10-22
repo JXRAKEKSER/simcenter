@@ -244,7 +244,7 @@ def floor(number):
     print("schefule-", schedule)
     print("stud-", stud)
     print("tablo-", tablo)
-    return render_template('floor-monitor/floor-monitor.html')
+    return render_template('floor-monitor/floor-monitor.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp())
     return render_template('tablo1.html', schedule=schedule, stud=stud, tablo=tablo, access=access, timez=timez, test4=test4, i=i, time=a.timestamp() )
 
 @core.route('/camcap')
@@ -737,7 +737,7 @@ def render_print_view(id_stud):
 
     for plan_row in student_with_access:
         target_room = rooms_dict.get(plan_row.room, 'Комната')
-        rooms_for_student.append({"name": target_room, "number": plan_row.room})
+        rooms_for_student.append({"name": target_room, "number": plan_row.room, "time_start": plan_row.time_begin})
             
     return render_template('print-ticket/print-ticket.html', person_id=student[0].person_id, specialization=student[0].specialization_id, rooms =rooms_for_student,  login=student[0].login, password=student[0].password, qr_code=qr_code, redirect_url=redir)
     

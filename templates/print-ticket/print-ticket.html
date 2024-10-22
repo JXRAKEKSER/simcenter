@@ -32,13 +32,15 @@
           <tr style="background-color: black; color: white; font-size: 20px">
             <td colspan="3" style="text-align:center;   height: fit-content;" >&num;</td>
             <td colspan="3" style=" height: fit-content;">Станция</td>
-            <td colspan="3" style="text-align:center; width: 1%; height: fit-content;">&numero;<br/> кабинета</td>
+            <td colspan="3" style="text-align:center; height: fit-content;">&numero;<br/> кабинета</td>
+            <td colspan="3" style="text-align:center; width: 1%; height: fit-content;">Время<br/> начала</td>
           </tr>
               {%for el in rooms %}
             <tr style="font-size: 15px;">
               <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;">{{loop.index}}</td>
               <td colspan="3" style="height:20px; border: 1px solid black;">{{el.name}}</td>
-              <td style="text-align:center; height:20px; border: 1px solid black;">{{el.number}}</td>
+              <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;">{{el.number}}</td>
+              <td colspan="3" style="text-align:center; height:20px; border: 1px solid black;">{{el.time_start}}</td>
             </tr>
       {%endfor%}
       </table>

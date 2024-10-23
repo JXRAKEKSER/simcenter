@@ -521,10 +521,18 @@ def render_current_students(room_id):
     current_time = current_date_with_offset.strftime('%H:%M')
     
     student_in_room_list = data.Stud_access.query.filter(data.Stud_access.room == room_id).filter(data.Stud_access.time_begin <= current_time).filter(data.Stud_access.time_end >= current_time).all()
-    return render_template('room-monitor/room-monitor.html')
+    
+    all_rooms = data.Room.query.all()
+    room_name = None
+    for room in all_rooms:
+        if room.number == room_id:
+            room_name = room.name
+        
+    
+    """ return render_template('room-monitor/room-monitor.html') """
     if bool(student_in_room_list) == 0:
-        return render_template('tablo2.html', student_in_room=None, time=current_local_date.timestamp())
-    return render_template('tablo2.html', student_in_room=student_in_room_list[0], time=current_local_date.timestamp())
+        return render_template('room-monitor/room-monitor.html', room_name=room_name, student_in_room=None, time=current_local_date.timestamp())
+    return render_template('room-monitor/room-monitor.html', room_name=room_name, student_in_room=student_in_room_list[0].student, time=current_local_date.timestamp())
 
 
 """ def pult():

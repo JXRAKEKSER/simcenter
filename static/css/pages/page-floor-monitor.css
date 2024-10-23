@@ -44,7 +44,7 @@
 .table__head {
     display: grid;
     gap: 0 13px;
-    grid-template-columns: minmax(150px, 316px) minmax(150px, 547px) minmax(150px, 316px) minmax(150px, 231px) minmax(150px, 231px);
+    grid-template-columns: minmax(150px, 0.19fr) minmax(150px, 0.33fr) minmax(150px, 0.19fr) minmax(150px, 0.14fr) minmax(150px, 0.14fr);
     background-color: var(--primary-green);
     justify-items: center;
     align-items: center;
@@ -61,14 +61,14 @@
 .table__row {
     display: grid;
     gap: 0 13px;
-    grid-template-columns: minmax(150px, 316px) minmax(150px, 547px) minmax(150px, 316px) minmax(150px, 231px) minmax(150px, 231px);
+    grid-template-columns: minmax(150px, 0.19fr) minmax(150px, 0.33fr) minmax(150px, 0.19fr) minmax(150px, 0.14fr) minmax(150px, 0.14fr);
     justify-items: center;
     align-items: center;
 }
 .table__row-label {
-    font-size: 40px;
+    font-size: 37px;
     font-weight: 600;
-    line-height: 48.76px;
+    line-height: 1;
     text-align: center;
     color: var(--primary-green);
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="refresh" content="5.5">
     <link rel="stylesheet" href="/static/css/pages/page-room-monitor.css" />
-    <title>Document</title>
+    <title>Станция</title>
   </head>
   <body class="body">
     <main class="room-monitor">
@@ -13,23 +13,14 @@
         <h3 class="info-card__title">Наименование станции</h3>
         <hr class="info-card__devider" />
         <p class="info-card__text info-card__text_mode_small">
-          "Станция культуры и искусства 'Вдохновение' — место, где встречаются
-          творческие умы, проходят выставки, мастер-классы и концерты,
-          объединяющие людей, стремящихся к самовыражению и обмену идеями."
+          {{ room_name }}
         </p>
       </article>
       <article class="info-card">
         <h3 class="info-card__title">СЕЙЧАС НА СТАНЦИИ</h3>
         <hr class="info-card__devider" />
         <p class="info-card__text">
-            Иванов Иван Иванович
-        </p>
-      </article>
-      <article class="info-card">
-        <h3 class="info-card__title">Следующий на станции</h3>
-        <hr class="info-card__devider" />
-        <p class="info-card__text">
-            Петров Иван Иванович
+            {{ student_in_room }}
         </p>
       </article>
     </main>
